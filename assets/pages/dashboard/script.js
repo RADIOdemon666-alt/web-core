@@ -1,60 +1,111 @@
-// عند الضغط على أي مشروع
-document.querySelectorAll('.project-card').forEach(card => {
+// Services - add icon, title, desc dynamically
+document.querySelectorAll('.service-card').forEach(card => {
+  const icon = card.dataset.icon;
+  const title = card.dataset.title;
+  const desc = card.dataset.desc;
+  card.innerHTML = `<i class="${icon}"></i><h3>${title}</h3><p>${desc}</p>`;
+});
+
+// Projects Slider
+const projects = document.querySelectorAll('.project-card');
+let currentProject = 0;
+projects.forEach((card, index) => {
+  if(index !== currentProject) card.style.display = 'none';
+});
+
+function showProject(index) {
+  projects[currentProject].style.display = 'none';
+  currentProject = index;
+  projects[currentProject].style.display = 'flex';
+}
+
+// Wheel Scroll for Desktop
+document.querySelector('.portfolio-container').addEventListener('wheel', e => {
+  if(e.deltaY > 0){
+    let next = (currentProject + 1) % projects.length;
+    showProject(next);
+  } else if(e.deltaY < 0){
+    let prev = (currentProject - 1 + projects.length) % projects.length;
+    showProject(prev);
+  }
+});
+
+// Touch Swipe for Mobile
+let startX = 0;
+document.querySelector('.portfolio-container').addEventListener('touchstart', e => {
+  startX = e.touches[0].clientX;
+});
+document.querySelector('.portfolio-container').addEventListener('touchend', e => {
+  let endX = e.changedTouches[0].clientX;
+  if(startX - endX > 50){ // swipe left
+    let next = (currentProject + 1) % projects.length;
+    showProject(next);
+  } else if(endX - startX > 50){ // swipe right
+    let prev = (currentProject - 1 + projects.length) % projects.length;
+    showProject(prev);
+  }
+});
+
+// Projects expand
+const expanded = document.querySelector('.project-expanded');
+const title = document.getElementById('expandedTitle');
+const link = document.getElementById('expandedLink');
+const source = document.getElementById('expandedSource');
+const stars = document.getElementById('expandedStars');
+const closeBtn = document.getElementById('closeExpanded');
+
+projects.forEach(card => {
   card.addEventListener('click', () => {
-
-    // اخفاء بقية المشاريع والعناصر
-    document.querySelectorAll('.project-card').forEach(c => {
-      if(c !== card) c.classList.add('disappear');
-    });
-    document.querySelectorAll('.hero, .services, .clients').forEach(el => {
-      el.classList.add('disappear');
-    });
-
-    // تكبير المشروع الحالي
-    card.style.transform = "scale(1.05)";
-
-    // إنشاء زر الإغلاق إذا مش موجود
-    if(!card.querySelector('.close-btn')) {
-      const closeBtn = document.createElement('button');
-      closeBtn.textContent = "✖";
-      closeBtn.classList.add('close-btn');
-      closeBtn.style.position = 'absolute';
-      closeBtn.style.top = '10px';
-      closeBtn.style.left = '10px';
-      closeBtn.style.padding = '5px 10px';
-      closeBtn.style.border = 'none';
-      closeBtn.style.borderRadius = '5px';
-      closeBtn.style.cursor = 'pointer';
-      closeBtn.style.background = '#ff5555';
-      closeBtn.style.color = '#fff';
-      closeBtn.style.fontSize = '14px';
-      closeBtn.style.zIndex = '10';
-      card.appendChild(closeBtn);
-
-      closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // لمنع تشغيل click على الكارد نفسه
-        // إعادة ظهور كل العناصر
-        document.querySelectorAll('.project-card').forEach(c => c.classList.remove('disappear'));
-        document.querySelectorAll('.hero, .services, .clients').forEach(el => el.classList.remove('disappear'));
-        card.style.transform = "scale(1)";
-
-        // إزالة زر الإغلاق
-        closeBtn.remove();
-      });
-    }
+    projects[currentProject].style.display='none';
+    expanded.style.display='flex';
+    title.textContent = card.dataset.title;
+    link.href = card.dataset.link;
+    source.href = card.dataset.source;
+    stars.textContent = card.dataset.stars;
   });
 });
 
-// Scroll Clients Slider
-let clientSlider = document.querySelector('.clients-slider');
-clientSlider.addEventListener('wheel', e => {
-  e.preventDefault();
-  clientSlider.scrollLeft += e.deltaY;
+closeBtn.addEventListener('click', () => {
+  projects[currentProject].style.display='flex';
+  expanded.style.display='none';
 });
 
-// Scroll Portfolio Slider
-let portfolioSlider = document.querySelector('.portfolio-slider');
-portfolioSlider.addEventListener('wheel', e => {
-  e.preventDefault();
-  portfolioSlider.scrollLeft += e.deltaY;
+// Clients Slider
+const clients = document.querySelectorAll('.client-card');
+let currentClient = 0;
+clients.forEach((card, index) => {
+  if(index !== currentClient) card.style.display = 'none';
+});
+
+function showClient(index) {
+  clients[currentClient].style.display = 'none';
+  currentClient = index;
+  clients[currentClient].style.display = 'flex';
+}
+
+// Wheel Scroll for Desktop
+document.querySelector('.clients-container').addEventListener('wheel', e => {
+  if(e.deltaY > 0){
+    let next = (currentClient + 1) % clients.length;
+    showClient(next);
+  } else if(e.deltaY < 0){
+    let prev = (currentClient - 1 + clients.length) % clients.length;
+    showClient(prev);
+  }
+});
+
+// Touch Swipe for Mobile
+let clientStartX = 0;
+document.querySelector('.clients-container').addEventListener('touchstart', e => {
+  clientStartX = e.touches[0].clientX;
+});
+document.querySelector('.clients-container').addEventListener('touchend', e => {
+  let endX = e.changedTouches[0].clientX;
+  if(clientStartX - endX > 50){ // swipe left
+    let next = (currentClient + 1) % clients.length;
+    showClient(next);
+  } else if(endX - clientStartX > 50){ // swipe right
+    let prev = (currentClient - 1 + clients.length) % clients.length;
+    showClient(prev);
+  }
 });
