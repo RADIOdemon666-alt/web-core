@@ -41,6 +41,13 @@ body {
   display: flex;
   flex-direction: column;
   animation: fadeIn 1s ease, electricGlow 3s infinite;
+  visibility: hidden; /* مخفية عند فتح الموقع */
+  opacity: 0;
+}
+
+.form-box.show {
+  visibility: visible;
+  opacity: 1;
 }
 
 .card-avatar {
@@ -147,20 +154,27 @@ body {
   width: 280px;
   max-width: 90%;
   text-align: center;
-  position: absolute;
-  top: -70px;
+  position: fixed; /* منتصف الشاشة */
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   display: none;
-  z-index: 10;
+  z-index: 1000;
   background: rgba(0,0,0,0.85);
   animation: fadeIn 0.3s ease;
 }
 
-.message-box.error { color: #ff5555; box-shadow: 0 0 15px #ff5555; }
-.welcome-box { color: #00ff99; box-shadow: 0 0 15px #00ff99; }
+.message-box.error { 
+  color: #ff5555; 
+  box-shadow: 0 0 15px #ff5555; 
+}
 
-/* Custom Select */
+.welcome-box { 
+  color: #00ff99; 
+  box-shadow: 0 0 15px #00ff99; 
+}
+
+/* Custom Select Discord Style */
 .custom-select {
   position: relative;
   flex: 1;
@@ -171,27 +185,51 @@ body {
   user-select: none;
 }
 
-.custom-select .selected { padding: 6px; }
+.custom-select .selected {
+  padding: 6px;
+  display: flex;
+  align-items: center;
+}
+
 .custom-select .options {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.9);
-  max-height: 150px;
+  background: rgba(10,10,10,0.95);
+  max-height: 200px;
   overflow-y: auto;
   border-radius: 0 0 5px 5px;
   z-index: 5;
-}
-.custom-select .options li {
-  padding: 6px;
-  list-style: none;
-  transition: 0.2s;
-}
-.custom-select .options li:hover {
-  background: rgba(0, 200, 255, 0.2);
+  box-shadow: 0 0 10px #00e0ff;
 }
 
-@keyframes fadeIn { from { opacity:0; transform:scale(0.9);} to{opacity:1; transform:scale(1);} }
-@keyframes pulseIcon {0%{transform:scale(1);opacity:1;}50%{transform:scale(1.2);opacity:0.8;}100%{transform:scale(1);opacity:1;}}
-@keyframes electricGlow {0%,100%{box-shadow:0 0 25px rgba(0,200,255,0.7);}50%{box-shadow:0 0 45px rgba(0,200,255,1),0 0 70px rgba(0,200,255,0.6);}}
+.custom-select .options li {
+  padding: 8px 10px;
+  list-style: none;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.custom-select .options li:hover {
+  background: rgba(0, 200, 255, 0.2);
+  color: #00e0ff;
+  border-radius: 5px;
+}
+
+/* Animations */
+@keyframes fadeIn { 
+  from { opacity:0; transform:scale(0.9);}
+  to { opacity:1; transform:scale(1);}
+}
+@keyframes pulseIcon {
+  0%{transform:scale(1);opacity:1;}
+  50%{transform:scale(1.2);opacity:0.8;}
+  100%{transform:scale(1);opacity:1;}
+}
+@keyframes electricGlow {
+  0%,100%{box-shadow:0 0 25px rgba(0,200,255,0.7);}
+  50%{box-shadow:0 0 45px rgba(0,200,255,1),0 0 70px rgba(0,200,255,0.6);}
+}
