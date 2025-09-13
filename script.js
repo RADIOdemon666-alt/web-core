@@ -127,49 +127,28 @@ window.login = async function() {
 };
 
 // جلب الدول وعرضها بشكل Discord style
-async function loadCountriesDiscord() {
+async function loadCountriesInput() {
   try {
     const res = await fetch("assets/settings/countries.json");
     const countries = await res.json();
     countries.sort((a,b)=>a.name.localeCompare(b.name));
 
-    const select = document.getElementById("country-select");
-    const selected = select.querySelector(".selected");
-    const optionsList = select.querySelector(".options");
+    const countryInput = document.getElementById("reg-phone");
 
-    // إضافة الدول
-    countries.forEach(c=>{
-      const li = document.createElement("li");
-      li.textContent = `${c.flag} ${c.name} (+${c.code})`;
-      li.dataset.name = c.name;
-      li.dataset.code = c.code;
-      li.dataset.flag = c.flag;
-      optionsList.appendChild(li);
+    // نفترض أول دولة كقيمة افتراضية
+    if(countries.length > 0){
+      countryInput.value = `${countries[0].flag} +${countries[0].code}`;
+      countryInput.dataset.name = countries[0].name;
+      countryInput.dataset.code = countries[0].code;
+      countryInput.dataset.flag = countries[0].flag;
+    }
 
-      li.addEventListener("click", ()=>{
-        selected.textContent = li.textContent;
-        selected.dataset.name = li.dataset.name;
-        selected.dataset.code = li.dataset.code;
-        selected.dataset.flag = li.dataset.flag;
-        optionsList.classList.add("hidden");
-      });
-    });
-
-    // عند الضغط على selected تفتح/تغلق القائمة
-    selected.addEventListener("click", (e)=>{
-      e.stopPropagation(); // يمنع غلق القائمة مباشرة عند الضغط
-      optionsList.classList.toggle("hidden");
-    });
-
-    // إغلاق القائمة عند الضغط في أي مكان خارجها
-    document.addEventListener("click", ()=>{
-      optionsList.classList.add("hidden");
-    });
-
+    // ممكن نغير الدولة برمجيًا لو أحببت
+    // مثلاً اختر الدولة حسب IP أو إعدادات سابقة
   } catch(err){
     showMessage("❌ فشل تحميل الدول", "error");
     console.error(err);
   }
 }
 
-loadCountriesDiscord();
+loadCountriesInput();
