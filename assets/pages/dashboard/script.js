@@ -1,30 +1,33 @@
-// الحصول على العناصر
+// العناصر الرئيسية
 const startBtn = document.getElementById('startProjectBtn');
 const modal = document.getElementById('projectForm');
 const closeBtn = document.getElementById('closeForm');
 const sendBtn = document.getElementById('sendBtn');
 
-// التأكد من وجود العناصر قبل إضافة الأحداث
+const projects = document.querySelectorAll('.project-card');
+let currentIndex = 0;
+const btnLeft = document.querySelector('.slider-btn-left');
+const btnRight = document.querySelector('.slider-btn-right');
+
+// ======== فتح وغلق الموديل ========
 if (startBtn && modal && closeBtn && sendBtn) {
 
-  // فتح الموديل عند الضغط على زر "ابدأ مشروعك"
+  // فتح الموديل
   startBtn.addEventListener('click', () => {
     modal.style.display = 'flex';
   });
 
-  // غلق الموديل عند الضغط على زر الإغلاق
+  // غلق الموديل عند الضغط على الزر
   closeBtn.addEventListener('click', () => {
     modal.style.display = 'none';
   });
 
-  // غلق الموديل عند الضغط خارج المحتوى
+  // غلق عند الضغط خارج المحتوى
   window.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-    }
+    if (e.target === modal) modal.style.display = 'none';
   });
 
-  // إرسال البيانات على WhatsApp
+  // إرسال WhatsApp
   sendBtn.addEventListener('click', () => {
     const name = document.getElementById('nameInput').value.trim();
     const email = document.getElementById('emailInput').value.trim();
@@ -37,17 +40,46 @@ if (startBtn && modal && closeBtn && sendBtn) {
 
     const message = `مرحبًا، أنا ${name}\nالبريد الإلكتروني: ${email}\nطلبي: ${request}`;
     const waLink = `https://wa.me/201500564191?text=${encodeURIComponent(message)}`;
-
-    // فتح رابط WhatsApp في تبويب جديد
-    window.open(waLink, '_blank');
+    const win = window.open(waLink, '_blank');
+    if (!win) alert('تعذر فتح WhatsApp. تحقق من إعدادات منع النوافذ المنبثقة.');
 
     // مسح الحقول
     document.getElementById('nameInput').value = '';
     document.getElementById('emailInput').value = '';
     document.getElementById('requestInput').value = '';
 
-    // غلق الموديل بعد الإرسال
     modal.style.display = 'none';
   });
+}
 
+// ======== Projects Slider ========
+function showProject(index) {
+  projects.forEach((p, i) => {
+    p.classList.remove('active');
+    if (i === index) p.classList.add('active');
+  });
+}
+
+// اظهار المشروع الأول
+if (projects.length > 0) showProject(currentIndex);
+
+// التالي
+if (btnRight) btnRight.addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % projects.length;
+  showProject(currentIndex);
+});
+
+// السابق
+if (btnLeft) btnLeft.addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + projects.length) % projects.length;
+  showProject(currentIndex);
+});
+
+// ======== Clients Slider Scroll ========
+let clientSlider = document.querySelector('.clients-slider');
+if (clientSlider) {
+  clientSlider.addEventListener('wheel', e => {
+    e.preventDefault();
+    clientSlider.scrollLeft += e.deltaY;
+  });
 }
