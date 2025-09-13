@@ -10,7 +10,6 @@ body {
   background: #000;
 }
 
-/* خلفية فيديو */
 #bg-video {
   position: fixed;
   top: 0;
@@ -22,21 +21,13 @@ body {
   object-position: center;
 }
 
-@media (max-width: 600px) {
-  #bg-video {
-    object-fit: fill;
-  }
-}
-
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  flex-direction: column;
 }
 
-/* الكارد */
 .form-box {
   background: rgba(0, 0, 0, 0.8);
   position: relative;
@@ -48,8 +39,9 @@ body {
   max-width: 90%;
   color: #fff;
   transition: 0.3s;
+  display: flex;
+  flex-direction: column;
   animation: fadeIn 1s ease, electricGlow 3s infinite;
-  margin-bottom: 20px;
 }
 
 .card-avatar {
@@ -99,17 +91,20 @@ body {
 .input-group i {
   color: #00e0ff;
   margin-left: 8px;
+  transition: 0.3s;
   text-shadow: 0 0 8px rgba(0, 224, 255, 0.6);
 }
 
-.input-group input {
+.input-group input,
+.input-group select {
   flex: 1;
   border: none;
   outline: none;
-  background: transparent;
+  background: rgba(0,0,0,0.2);
   color: #fff;
   font-size: 13px;
   padding: 6px;
+  border-radius: 5px;
 }
 
 .input-group input::placeholder {
@@ -145,77 +140,41 @@ body {
   box-shadow: 0 0 15px #00e0ff;
 }
 
-.form-box p {
-  margin-top: 10px;
-  font-size: 12px;
-}
-
-.form-box a {
-  color: #00e0ff;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.form-box a:hover {
-  text-decoration: underline;
-}
-
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
 /* الرسائل */
-.message-box {
+.message-box, .welcome-box {
   padding: 10px 15px;
   border-radius: 8px;
-  margin-bottom: 15px;
   font-weight: bold;
-  display: none;
   width: 280px;
   max-width: 90%;
   text-align: center;
-  box-shadow: 0 0 15px rgba(0, 224, 255, 0.7);
-  animation: fadeIn 0.5s ease;
-}
-
-.message-box.success {
-  background-color: rgba(0,255,0,0.2);
-  color: #0f0;
-}
-
-.message-box.error {
-  background-color: rgba(255,0,0,0.2);
-  color: #f00;
-}
-
-/* الترحيب */
-.welcome-box {
-  padding: 15px 20px;
-  border-radius: 10px;
-  margin-top: 10px;
-  background: linear-gradient(90deg, #00e0ff, #0077ff);
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
   display: none;
-  box-shadow: 0 0 15px #00e0ff;
-  animation: fadeIn 1s ease, electricGlow 3s infinite;
+  z-index: 10;
+  background: rgba(0,0,0,0.85);
+  animation: fadeIn 0.3s ease;
 }
 
-/* أنيميشن الدخول */
+.message-box.error { color: #ff5555; box-shadow: 0 0 15px #ff5555; }
+.welcome-box { color: #00ff99; box-shadow: 0 0 15px #00ff99; }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes pulseIcon {
-  0%   { transform: scale(1);   opacity: 1; }
-  50%  { transform: scale(1.2); opacity: 0.8; }
-  100% { transform: scale(1);   opacity: 1; }
+  0%   { transform: scale(1); opacity:1; }
+  50%  { transform: scale(1.2); opacity:0.8; }
+  100% { transform: scale(1); opacity:1; }
 }
 
 @keyframes electricGlow {
-  0%, 100% { box-shadow: 0 0 25px rgba(0, 200, 255, 0.7); }
-  50%      { box-shadow: 0 0 45px rgba(0, 200, 255, 1), 0 0 70px rgba(0, 200, 255, 0.6); }
+  0%,100% { box-shadow: 0 0 25px rgba(0,200,255,0.7); }
+  50% { box-shadow: 0 0 45px rgba(0,200,255,1),0 0 70px rgba(0,200,255,0.6); }
 }
