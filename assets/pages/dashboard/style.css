@@ -13,18 +13,14 @@ body {
 }
 
 /* Background Video */
-/* Background Video */
 #bg-video {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: 50px; /* مسافة ثابتة لليمين */
+  width: calc(100% - 50px); /* عرض الفيديو يقل عشان يبقى ثابت */
   height: 100%;
   object-fit: cover;
   z-index: -1;
-
-  /* تحريك الفيديو لليمين */
-  transform: translateX(50px);
 }
 /* Hero Section */
 .hero {
