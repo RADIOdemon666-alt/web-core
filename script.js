@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// توليد ID عشوائي 10 أرقام
+// توليد ID عشوائي
 function generateId() {
   return Math.floor(1000000000 + Math.random() * 9000000000).toString();
 }
@@ -31,7 +31,6 @@ function showMessage(msg, type="error") {
   messageBox.className = type==="error" ? "message-box error" : "message-box success";
   messageBox.style.display = "block";
 
-  // إخفاء الكارد أثناء الرسالة
   loginBox.style.visibility = "hidden";
   registerBox.style.visibility = "hidden";
 
@@ -65,7 +64,7 @@ window.register = async function() {
   const password = document.getElementById("reg-password").value;
 
   // الدول
-  const selected = document.querySelector("#country-select .selected");
+  const selected = document.getElementById("reg-phone");
   const countryName = selected.dataset.name;
   const countryCode = selected.dataset.code;
   const countryFlag = selected.dataset.flag;
@@ -126,29 +125,67 @@ window.login = async function() {
   }
 };
 
-// جلب الدول وعرضها بشكل Discord style
-async function loadCountriesInput() {
+// ======= Discord style اختيار الدول =======
+const countrySelect = document.getElementById("country-select");
+const selectedDiv = countrySelect.querySelector(".selected");
+const optionsList = document.getElementById("country-options");
+const phoneInput = document.getElementById("reg-phone");
+
+let countriesList = [];
+
+async function loadCountries() {
   try {
     const res = await fetch("assets/settings/countries.json");
     const countries = await res.json();
     countries.sort((a,b)=>a.name.localeCompare(b.name));
+    countriesList = countries;
 
-    const countryInput = document.getElementById("reg-phone");
+    // ملء قائمة options
+    optionsList.innerHTML = "";
+    countries.forEach(c => {
+      const li = document.createElement("li");
+      li.className = "option-item";
+      li.dataset.name = c.name;
+      li.dataset.code = c.code;
+      li.dataset.flag = c.flag;
+      li.textContent = `${c.flag} ${c.name} (+${c.code})`;
+      li.addEventListener("click", () => {
+        selectedDiv.textContent = `${c.flag} ${c.name}`;
+        phoneInput.value = `+${c.code}`;
+        phoneInput.dataset.name = c.name;
+        phoneInput.dataset.code = c.code;
+        phoneInput.dataset.flag = c.flag;
 
-    // نفترض أول دولة كقيمة افتراضية
+        optionsList.classList.add("hidden");
+      });
+      optionsList.appendChild(li);
+    });
+
+    // قيمة افتراضية
     if(countries.length > 0){
-      countryInput.value = `${countries[0].flag} +${countries[0].code}`;
-      countryInput.dataset.name = countries[0].name;
-      countryInput.dataset.code = countries[0].code;
-      countryInput.dataset.flag = countries[0].flag;
+      const first = countries[0];
+      selectedDiv.textContent = `${first.flag} ${first.name}`;
+      phoneInput.value = `+${first.code}`;
+      phoneInput.dataset.name = first.name;
+      phoneInput.dataset.code = first.code;
+      phoneInput.dataset.flag = first.flag;
     }
 
-    // ممكن نغير الدولة برمجيًا لو أحببت
-    // مثلاً اختر الدولة حسب IP أو إعدادات سابقة
-  } catch(err){
-    showMessage("❌ فشل تحميل الدول", "error");
-    console.error(err);
+  } catch(err) {
+    console.error("فشل تحميل الدول", err);
   }
 }
 
-loadCountriesInput();
+loadCountries();
+
+// فتح/إغلاق القائمة عند الضغط على selected
+selectedDiv.addEventListener("click", () => {
+  optionsList.classList.toggle("hidden");
+});
+
+// إغلاق القائمة عند الضغط خارجها
+document.addEventListener("click", (e) => {
+  if(!countrySelect.contains(e.target)){
+    optionsList.classList.add("hidden");
+  }
+});
