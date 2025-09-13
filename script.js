@@ -13,7 +13,6 @@ const firebaseConfig = {
   measurementId: "G-9NLEWJYZ6J"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -24,12 +23,12 @@ window.toggleForms = function () {
   document.getElementById("register-box").classList.toggle("hidden");
 };
 
-// توليد ID عشوائي 10 أرقام
+// توليد ID عشوائي
 function generateId() {
   return Math.floor(1000000000 + Math.random() * 9000000000).toString();
 }
 
-// رسائل الخطأ المخصصة
+// رسائل الخطأ
 const firebaseErrors = {
   "auth/email-already-in-use": "❌ هذا البريد مستخدم من قبل",
   "auth/invalid-email": "❌ البريد غير صالح",
@@ -38,27 +37,18 @@ const firebaseErrors = {
   "auth/wrong-password": "❌ كلمة المرور خاطئة"
 };
 
-// دوال عرض الرسائل والترحيب
+// عرض الرسائل
 function showMessage(type, text) {
-  let box = document.getElementById("message-box");
-  if(!box){
-    box = document.createElement("div");
-    box.id = "message-box";
-    document.querySelector(".container").prepend(box);
-  }
+  const box = document.getElementById("message-box");
   box.className = "message-box " + type;
   box.textContent = text;
   box.style.display = "block";
   setTimeout(() => box.style.display = "none", 4000);
 }
 
+// رسالة ترحيب
 function showWelcome(name) {
-  let box = document.getElementById("welcome-box");
-  if(!box){
-    box = document.createElement("div");
-    box.id = "welcome-box";
-    document.querySelector(".container").prepend(box);
-  }
+  const box = document.getElementById("welcome-box");
   box.textContent = `أهلاً وسهلاً بك، ${name} 🌟`;
   box.className = "welcome-box";
   box.style.display = "block";
@@ -70,12 +60,12 @@ window.register = async function () {
   const phone = document.getElementById("reg-phone").value;
   const email = document.getElementById("reg-email").value;
   const password = document.getElementById("reg-password").value;
-  const countryInput = document.getElementById("country-code").value;
 
-  const countryData = countryInput.split(" ");
-  const countryFlag = countryData[1] || "";
-  const countryCode = countryData[0].replace("+", "") || "";
-  const countryName = countryData.slice(2).join(" ") || "";
+  const countrySelect = document.getElementById("country-code");
+  const selectedIndex = countrySelect.selectedIndex;
+  const countryFlag = countrySelect.options[selectedIndex].text.split(" ")[0];
+  const countryName = countrySelect.options[selectedIndex].text.split(" ")[1];
+  const countryCode = countrySelect.value;
 
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -127,24 +117,21 @@ window.login = async function () {
   }
 };
 
-// جلب الدول وعرضها داخل input مع datalist
+// تحميل الدول من JSON وعرضها في <select>
 async function loadCountries() {
   try {
     const res = await fetch("assets/settings/countries.json");
     const countries = await res.json();
 
-    const input = document.getElementById("country-code");
-    const datalist = document.createElement("datalist");
-    datalist.id = "countries-list";
-    document.body.appendChild(datalist);
-    input.setAttribute("list", "countries-list");
+    const select = document.getElementById("country-code");
 
     countries.sort((a, b) => a.name.localeCompare(b.name));
 
     countries.forEach(c => {
       const option = document.createElement("option");
-      option.value = `+${c.code} ${c.flag} ${c.name}`;
-      datalist.appendChild(option);
+      option.value = c.code; // رمز الدولة فقط
+      option.textContent = `${c.flag} ${c.name} (+${c.code})`; // علم + اسم + رمز
+      select.appendChild(option);
     });
 
   } catch (err) {
@@ -152,4 +139,5 @@ async function loadCountries() {
   }
 }
 
+// تنفيذ تحميل الدول عند فتح الصفحة
 loadCountries();
