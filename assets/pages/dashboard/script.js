@@ -1,111 +1,104 @@
-// Services - add icon, title, desc dynamically
-document.querySelectorAll('.service-card').forEach(card => {
-  const icon = card.dataset.icon;
-  const title = card.dataset.title;
-  const desc = card.dataset.desc;
-  card.innerHTML = `<i class="${icon}"></i><h3>${title}</h3><p>${desc}</p>`;
-});
+document.addEventListener('DOMContentLoaded', () => {
 
-// Projects Slider
-const projects = document.querySelectorAll('.project-card');
-let currentProject = 0;
-projects.forEach((card, index) => {
-  if(index !== currentProject) card.style.display = 'none';
-});
+  // === زر ابدأ المشروع + الفورم ===
+  const startBtn = document.getElementById('startProjectBtn');
 
-function showProject(index) {
-  projects[currentProject].style.display = 'none';
-  currentProject = index;
-  projects[currentProject].style.display = 'flex';
-}
+  // إنشاء الفورم ديناميكيًا
+  const modal = document.createElement('div');
+  modal.id = 'projectForm';
+  modal.className = 'modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close" id="closeForm">&times;</span>
+      <h2>ابدأ مشروعك</h2>
+      <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" id="nameInput" placeholder="اسمك">
+      </div>
+      <div class="input-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" id="emailInput" placeholder="ايميلك">
+      </div>
+      <div class="input-group">
+        <i class="fa fa-file-alt"></i>
+        <textarea id="requestInput" placeholder="طلبك" rows="4"></textarea>
+      </div>
+      <button id="sendBtn"><i class="fa fa-paper-plane"></i> إرسال</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
 
-// Wheel Scroll for Desktop
-document.querySelector('.portfolio-container').addEventListener('wheel', e => {
-  if(e.deltaY > 0){
-    let next = (currentProject + 1) % projects.length;
-    showProject(next);
-  } else if(e.deltaY < 0){
-    let prev = (currentProject - 1 + projects.length) % projects.length;
-    showProject(prev);
-  }
-});
-
-// Touch Swipe for Mobile
-let startX = 0;
-document.querySelector('.portfolio-container').addEventListener('touchstart', e => {
-  startX = e.touches[0].clientX;
-});
-document.querySelector('.portfolio-container').addEventListener('touchend', e => {
-  let endX = e.changedTouches[0].clientX;
-  if(startX - endX > 50){ // swipe left
-    let next = (currentProject + 1) % projects.length;
-    showProject(next);
-  } else if(endX - startX > 50){ // swipe right
-    let prev = (currentProject - 1 + projects.length) % projects.length;
-    showProject(prev);
-  }
-});
-
-// Projects expand
-const expanded = document.querySelector('.project-expanded');
-const title = document.getElementById('expandedTitle');
-const link = document.getElementById('expandedLink');
-const source = document.getElementById('expandedSource');
-const stars = document.getElementById('expandedStars');
-const closeBtn = document.getElementById('closeExpanded');
-
-projects.forEach(card => {
-  card.addEventListener('click', () => {
-    projects[currentProject].style.display='none';
-    expanded.style.display='flex';
-    title.textContent = card.dataset.title;
-    link.href = card.dataset.link;
-    source.href = card.dataset.source;
-    stars.textContent = card.dataset.stars;
+  // فتح الفورم عند الضغط على الزر
+  startBtn.addEventListener('click', () => {
+    modal.style.display = 'flex';
   });
-});
 
-closeBtn.addEventListener('click', () => {
-  projects[currentProject].style.display='flex';
-  expanded.style.display='none';
-});
+  // اغلاق الفورم
+  document.getElementById('closeForm').addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
 
-// Clients Slider
-const clients = document.querySelectorAll('.client-card');
-let currentClient = 0;
-clients.forEach((card, index) => {
-  if(index !== currentClient) card.style.display = 'none';
-});
+  // إرسال البيانات على WhatsApp
+  document.getElementById('sendBtn').addEventListener('click', () => {
+    const name = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const request = document.getElementById('requestInput').value.trim();
 
-function showClient(index) {
-  clients[currentClient].style.display = 'none';
-  currentClient = index;
-  clients[currentClient].style.display = 'flex';
-}
+    if(!name || !email || !request){
+      alert('يرجى ملء جميع الحقول!');
+      return;
+    }
 
-// Wheel Scroll for Desktop
-document.querySelector('.clients-container').addEventListener('wheel', e => {
-  if(e.deltaY > 0){
-    let next = (currentClient + 1) % clients.length;
-    showClient(next);
-  } else if(e.deltaY < 0){
-    let prev = (currentClient - 1 + clients.length) % clients.length;
-    showClient(prev);
+    const phone = '201500564191';
+    const message = `مرحبا، أود بدء مشروع معكم.%0Aالاسم: ${name}%0Aالإيميل: ${email}%0Aالطلب: ${request}`;
+    const url = `https://wa.me/${phone}?text=${message}`;
+    window.open(url, '_blank');
+  });
+
+  // === Projects Slider ===
+  const projects = document.querySelectorAll('.project-card');
+  let currentProject = 0;
+
+  // إظهار الكارد الأول تلقائيًا عند التحميل
+  projects.forEach((card, index) => {
+    if(index === currentProject){
+      card.style.display = 'flex';
+      card.classList.add('active');
+    } else {
+      card.style.display = 'none';
+      card.classList.remove('active');
+    }
+  });
+
+  function showProject(index){
+    projects[currentProject].style.display = 'none';
+    projects[currentProject].classList.remove('active');
+    currentProject = index;
+    projects[currentProject].style.display = 'flex';
+    projects[currentProject].classList.add('active');
   }
-});
 
-// Touch Swipe for Mobile
-let clientStartX = 0;
-document.querySelector('.clients-container').addEventListener('touchstart', e => {
-  clientStartX = e.touches[0].clientX;
-});
-document.querySelector('.clients-container').addEventListener('touchend', e => {
-  let endX = e.changedTouches[0].clientX;
-  if(clientStartX - endX > 50){ // swipe left
-    let next = (currentClient + 1) % clients.length;
-    showClient(next);
-  } else if(endX - clientStartX > 50){ // swipe right
-    let prev = (currentClient - 1 + clients.length) % clients.length;
-    showClient(prev);
+  // Scroll و Swipe للمشاريع
+  const portfolioContainer = document.querySelector('.portfolio-container');
+  if(portfolioContainer){
+    portfolioContainer.addEventListener('wheel', e => {
+      if(e.deltaY > 0){
+        showProject((currentProject + 1) % projects.length);
+      } else if(e.deltaY < 0){
+        showProject((currentProject - 1 + projects.length) % projects.length);
+      }
+    });
+
+    let startX = 0;
+    portfolioContainer.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+    portfolioContainer.addEventListener('touchend', e => {
+      let endX = e.changedTouches[0].clientX;
+      if(startX - endX > 50){
+        showProject((currentProject + 1) % projects.length);
+      } else if(endX - startX > 50){
+        showProject((currentProject - 1 + projects.length) % projects.length);
+      }
+    });
   }
+
 });
