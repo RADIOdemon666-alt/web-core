@@ -137,6 +137,7 @@ async function loadCountriesDiscord() {
     const selected = select.querySelector(".selected");
     const optionsList = select.querySelector(".options");
 
+    // إضافة الدول
     countries.forEach(c=>{
       const li = document.createElement("li");
       li.textContent = `${c.flag} ${c.name} (+${c.code})`;
@@ -154,8 +155,15 @@ async function loadCountriesDiscord() {
       });
     });
 
-    selected.addEventListener("click", ()=>{
+    // عند الضغط على selected تفتح/تغلق القائمة
+    selected.addEventListener("click", (e)=>{
+      e.stopPropagation(); // يمنع غلق القائمة مباشرة عند الضغط
       optionsList.classList.toggle("hidden");
+    });
+
+    // إغلاق القائمة عند الضغط في أي مكان خارجها
+    document.addEventListener("click", ()=>{
+      optionsList.classList.add("hidden");
     });
 
   } catch(err){
