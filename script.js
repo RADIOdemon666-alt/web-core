@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// توليد ID عشوائي 10 أرقام
+// توليد ID عشوائي
 function generateId() {
   return Math.floor(1000000000 + Math.random() * 9000000000).toString();
 }
@@ -27,39 +27,25 @@ function showMessage(msg, type="error") {
   const messageBox = document.getElementById("message-box");
   const loginBox = document.getElementById("login-box");
   const registerBox = document.getElementById("register-box");
-
   messageBox.textContent = msg;
-  messageBox.className = type==="error" ? "message-box error" : "welcome-box";
+  messageBox.className = type==="error" ? "message-box error" : "message-box success";
   messageBox.style.display = "block";
 
-  // إخفاء الكارد أثناء الرسالة
-  loginBox.classList.add("hide");
-  registerBox.classList.add("hide");
+  loginBox.style.visibility = "hidden";
+  registerBox.style.visibility = "hidden";
 
   setTimeout(()=>{
     messageBox.style.display = "none";
-    loginBox.classList.remove("hide");
-    registerBox.classList.remove("hide");
+    loginBox.style.visibility = "visible";
+    registerBox.style.visibility = "visible";
   }, 3000);
 }
 
 // الترحيب
 function showWelcome(msg) {
   const welcomeBox = document.getElementById("welcome-box");
-  const loginBox = document.getElementById("login-box");
-  const registerBox = document.getElementById("register-box");
-
   welcomeBox.textContent = msg;
   welcomeBox.style.display = "block";
-
-  loginBox.classList.add("hide");
-  registerBox.classList.add("hide");
-
-  setTimeout(()=>{
-    welcomeBox.style.display = "none";
-    loginBox.classList.remove("hide");
-    registerBox.classList.remove("hide");
-  }, 3000);
 }
 
 // التبديل بين الكاردين
@@ -77,7 +63,8 @@ window.register = async function() {
   const email = document.getElementById("reg-email").value;
   const password = document.getElementById("reg-password").value;
 
-  const selected = document.querySelector("#country-select .selected");
+  // الدول
+  const selected = document.getElementById("reg-phone");
   const countryName = selected.dataset.name;
   const countryCode = selected.dataset.code;
   const countryFlag = selected.dataset.flag;
@@ -132,57 +119,73 @@ window.login = async function() {
       window.location.href = "assets/pages/dashboard/index.html";
     }, 1500);
   } catch(error) {
-    showMessage("❌ البريد أو كلمة المرور غير صحيحة", "error");
+    let msg = "❌ البريد أو كلمة المرور غير صحيحة";
+    showMessage(msg, "error");
     console.error(error);
   }
 };
 
-// تحميل الدول وعرضها في custom select
-async function loadCountriesInput() {
+// ======= Discord style اختيار الدول =======
+const countrySelect = document.getElementById("country-select");
+const selectedDiv = countrySelect.querySelector(".selected");
+const optionsList = document.getElementById("country-options");
+const phoneInput = document.getElementById("reg-phone");
+
+let countriesList = [];
+
+async function loadCountries() {
   try {
     const res = await fetch("assets/Settings/countries.json");
     const countries = await res.json();
     countries.sort((a,b)=>a.name.localeCompare(b.name));
+    countriesList = countries;
 
-    const select = document.getElementById("country-select");
-    const selected = select.querySelector(".selected");
-    const optionsList = select.querySelector(".options");
-
-    countries.forEach(country => {
+    // ملء قائمة options
+    optionsList.innerHTML = "";
+    countries.forEach(c => {
       const li = document.createElement("li");
-      li.innerHTML = `${country.flag} ${country.name} (+${country.code})`;
-      li.dataset.name = country.name;
-      li.dataset.code = country.code;
-      li.dataset.flag = country.flag;
-
+      li.className = "option-item";
+      li.dataset.name = c.name;
+      li.dataset.code = c.code;
+      li.dataset.flag = c.flag;
+      li.textContent = `${c.flag} ${c.name} (+${c.code})`;
       li.addEventListener("click", () => {
-        selected.textContent = `${country.flag} ${country.name} (+${country.code})`;
-        selected.dataset.name = country.name;
-        selected.dataset.code = country.code;
-        selected.dataset.flag = country.flag;
+        selectedDiv.textContent = `${c.flag} ${c.name}`;
+        phoneInput.value = `+${c.code}`;
+        phoneInput.dataset.name = c.name;
+        phoneInput.dataset.code = c.code;
+        phoneInput.dataset.flag = c.flag;
+
         optionsList.classList.add("hidden");
       });
-
       optionsList.appendChild(li);
     });
 
-    // أول دولة كقيمة افتراضية
+    // قيمة افتراضية
     if(countries.length > 0){
       const first = countries[0];
-      selected.textContent = `${first.flag} ${first.name} (+${first.code})`;
-      selected.dataset.name = first.name;
-      selected.dataset.code = first.code;
-      selected.dataset.flag = first.flag;
+      selectedDiv.textContent = `${first.flag} ${first.name}`;
+      phoneInput.value = `+${first.code}`;
+      phoneInput.dataset.name = first.name;
+      phoneInput.dataset.code = first.code;
+      phoneInput.dataset.flag = first.flag;
     }
 
-    selected.addEventListener("click", () => {
-      optionsList.classList.toggle("hidden");
-    });
-
-  } catch(err){
-    showMessage("❌ فشل تحميل الدول", "error");
-    console.error(err);
+  } catch(err) {
+    console.error("فشل تحميل الدول", err);
   }
 }
 
-loadCountriesInput();
+loadCountries();
+
+// فتح/إغلاق القائمة عند الضغط على selected
+selectedDiv.addEventListener("click", () => {
+  optionsList.classList.toggle("hidden");
+});
+
+// إغلاق القائمة عند الضغط خارجها
+document.addEventListener("click", (e) => {
+  if(!countrySelect.contains(e.target)){
+    optionsList.classList.add("hidden");
+  }
+});
