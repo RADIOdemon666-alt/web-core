@@ -1,14 +1,25 @@
-// عند الضغط على أي مشروع
-document.querySelectorAll('.project-card').forEach(card => {
-  card.addEventListener('click', () => {
-    document.querySelectorAll('.project-card').forEach(c => {
-      if(c !== card) c.classList.add('disappear');
-    });
-    document.querySelectorAll('.hero, .services, .clients').forEach(el => {
-      el.classList.add('disappear');
-    });
-    card.style.transform = "scale(1.05)";
-  });
+// Projects Slider
+const projects = document.querySelectorAll('.project-card');
+let currentIndex = 0;
+
+// اظهار المشروع الأول
+projects[currentIndex].classList.add('active');
+
+const btnLeft = document.querySelector('.slider-btn-left');
+const btnRight = document.querySelector('.slider-btn-right');
+
+// زر التالي
+btnRight.addEventListener('click', () => {
+  projects[currentIndex].classList.remove('active');
+  currentIndex = (currentIndex + 1) % projects.length;
+  projects[currentIndex].classList.add('active');
+});
+
+// زر السابق
+btnLeft.addEventListener('click', () => {
+  projects[currentIndex].classList.remove('active');
+  currentIndex = (currentIndex - 1 + projects.length) % projects.length;
+  projects[currentIndex].classList.add('active');
 });
 
 // Scroll Clients Slider
@@ -18,13 +29,7 @@ clientSlider.addEventListener('wheel', e => {
   clientSlider.scrollLeft += e.deltaY;
 });
 
-// Scroll Portfolio Slider
-let portfolioSlider = document.querySelector('.portfolio-slider');
-portfolioSlider.addEventListener('wheel', e => {
-  e.preventDefault();
-  portfolioSlider.scrollLeft += e.deltaY;
-});
-// --- إرسال البيانات على WhatsApp ---
+// إرسال البيانات على WhatsApp
 const sendBtn = document.getElementById('sendBtn');
 sendBtn.addEventListener('click', () => {
   const name = document.getElementById('nameInput').value.trim();
