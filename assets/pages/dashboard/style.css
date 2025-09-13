@@ -7,7 +7,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  overflow-x: hidden; /* منع التحرك يمين/شمال */
+  overflow-x: hidden; /* منع أي تحرك أفقي للصفحة */
   color: #00e0ff;
 }
 
@@ -19,7 +19,7 @@ body {
 
 .hero h1 {
   font-size: 48px;
-  text-shadow:0 0 15px #00e0ff;
+  text-shadow: 0 0 15px #00e0ff;
 }
 
 .hero p {
@@ -39,7 +39,7 @@ body {
 
 .hero button:hover {
   background: linear-gradient(90deg,#0077ff,#00e0ff);
-  box-shadow:0 0 15px #00e0ff;
+  box-shadow: 0 0 15px #00e0ff;
 }
 
 /* Modal Form */
@@ -130,17 +130,24 @@ body {
   opacity: 0.8;
 }
 
+/* Portfolio Slider Container */
+.portfolio-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px 0;
+}
+
 /* Portfolio Slider */
 .portfolio-slider {
   display: flex;
-  overflow-x: auto; /* السماح بالتمرير يمين/يسار */
-  overflow-y: hidden; /* منع Scroll عمودي */
+  overflow-x: hidden; /* منع السحب المباشر */
   gap: 20px;
   padding: 20px 0;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch; /* تحسين تجربة اللمس */
 }
 
+/* Project Card */
 .project-card {
   flex: 0 0 300px;
   display: flex;
@@ -187,6 +194,34 @@ body {
 .project-info p {
   color: #00e0ff;
   font-size: 14px;
+}
+
+/* Scroll Buttons */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.7);
+  border: none;
+  color: #00e0ff;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.slider-btn-left {
+  left: -20px;
+}
+
+.slider-btn-right {
+  right: -20px;
+}
+
+.slider-btn:hover {
+  background: #00e0ff;
+  color: #000;
 }
 
 /* Clients Slider */
