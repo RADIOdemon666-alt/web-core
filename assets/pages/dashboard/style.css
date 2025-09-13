@@ -13,6 +13,7 @@ body {
 }
 
 /* Background Video */
+/* Background Video */
 #bg-video {
   position: fixed;
   top: 0;
@@ -21,8 +22,10 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: -1;
-}
 
+  /* تحريك الفيديو لليمين */
+  transform: translateX(50px);
+}
 /* Hero Section */
 .hero {
   text-align: center;
