@@ -1,3 +1,4 @@
+/* Body & Background */
 body {
   margin: 0;
   font-family: "Cairo", sans-serif;
@@ -26,6 +27,7 @@ body {
   width: 100%;
 }
 
+/* Hero */
 .hero {
   text-align: center;
   margin-top: 50px;
@@ -38,7 +40,7 @@ body {
 }
 
 .hero p {
-  color:#fff;
+  color:#00e0ff;
   margin: 10px 0;
   font-size: 18px;
 }
@@ -58,59 +60,70 @@ body {
   box-shadow:0 0 15px #00e0ff;
 }
 
-/* Services */
-.services {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin: 30px 0;
-  gap: 15px;
+/* General Card Style */
+.card {
+  position: relative;
+  border-radius: 20px;
+  transition: 0.4s;
+  box-shadow:
+    0 0 10px rgba(0,224,255,0.5),
+    0 0 20px rgba(0,224,255,0.3) inset,
+    0 5px 15px rgba(0,0,0,0.4);
+  color: #00e0ff;
 }
 
+/* Services Cards */
 .service-card {
   background: rgba(0,0,0,0.7);
-  padding:15px;
-  border-radius:15px;
-  width:200px;
-  text-align:center;
-  box-shadow:0 0 15px #00e0ff;
+  padding: 25px;
+  width: 210px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .service-card i {
-  font-size:30px;
-  color:#00e0ff;
+  font-size: 32px;
+  color: #00e0ff;
+  margin-bottom: 10px;
 }
 
-/* Portfolio */
-.portfolio {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
+.service-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #00e0ff;
+  text-shadow: 0 0 8px #00e0ff;
+  margin-bottom: 8px;
 }
 
+.service-card p {
+  font-size: 14px;
+  color: #00e0ff;
+  opacity: 0.8;
+}
+
+/* Portfolio Cards */
 .project-card {
-  position:relative;
-  width:200px;
-  height:120px;
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:0 0 10px #00e0ff;
+  width: 210px;
+  height: 130px;
+  overflow: hidden;
+  border-radius: 20px;
 }
 
 .project-card img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .project-card .overlay {
-  position:absolute;
+  position: absolute;
   top:0;
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.5);
   color:#00e0ff;
   display:flex;
   justify-content:center;
@@ -121,39 +134,27 @@ body {
 
 .project-card:hover .overlay {
   opacity:1;
+  animation: neonBorder 1.5s linear infinite;
 }
 
-/* Clients */
-.clients {
-  text-align:center;
-  margin: 30px 0;
-}
-
-.clients h2 {
-  color:#00e0ff;
-  text-shadow:0 0 10px #00e0ff;
-  margin-bottom:15px;
-}
-
-.clients-logos {
-  display:flex;
-  justify-content:center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
+/* Clients Logos */
 .clients-logos img {
-  width:80px;
+  width: 90px;
   filter: brightness(0) invert(1);
+  margin:10px;
 }
 
-/* Footer */
-footer {
-  text-align:center;
-  color:#00e0ff;
-  text-shadow:0 0 8px #00e0ff;
-  padding:20px;
-  margin-top:30px;
+.clients-logos img:hover {
+  animation: neonBorder 1.5s linear infinite;
+}
+
+/* Neon border animation */
+@keyframes neonBorder {
+  0%{ box-shadow: 0 0 10px #00e0ff; }
+  25%{ box-shadow: 0 0 20px #00e0ff; }
+  50%{ box-shadow: 0 0 30px #00e0ff; }
+  75%{ box-shadow: 0 0 20px #00e0ff; }
+  100%{ box-shadow: 0 0 10px #00e0ff; }
 }
 
 /* Modal */
@@ -230,4 +231,13 @@ footer {
 #sendBtn:hover {
   background: linear-gradient(90deg,#0077ff,#00e0ff);
   box-shadow:0 0 15px #00e0ff;
+}
+
+/* Footer */
+footer {
+  text-align:center;
+  color:#00e0ff;
+  text-shadow:0 0 8px #00e0ff;
+  padding:20px;
+  margin-top:30px;
 }
