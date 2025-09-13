@@ -9,10 +9,14 @@
 </head>
 <body>
 
-  <!-- زر ابدأ المشروع -->
-  <button id="startProjectBtn">ابدأ مشروعك</button>
+  <!-- Hero Section -->
+  <div class="hero">
+    <h1>مرحبا بك في Web Zone</h1>
+    <p>نحن نصنع مواقع ويب احترافية ومبتكرة</p>
+    <button id="startProjectBtn"><i class="fa fa-rocket"></i> ابدأ مشروعك</button>
+  </div>
 
-  <!-- فورم بدء المشروع -->
+  <!-- Project Form Modal -->
   <div id="projectForm" class="modal">
     <div class="modal-content">
       <span class="close" id="closeForm">&times;</span>
@@ -33,6 +37,18 @@
     </div>
   </div>
 
+  <!-- Services Section -->
+  <div class="services-container">
+    <button class="service-card"><i class="fa fa-laptop-code"></i> تطوير مواقع</button>
+    <button class="service-card"><i class="fa fa-shopping-cart"></i> متاجر إلكترونية</button>
+    <button class="service-card"><i class="fa fa-mobile-screen-button"></i> تطبيقات موبايل</button>
+    <button class="service-card"><i class="fa fa-server"></i> استضافة وخوادم</button>
+    <button class="service-card"><i class="fa fa-search"></i> تحسين SEO</button>
+    <button class="service-card"><i class="fa fa-paint-brush"></i> تصميم واجهات</button>
+    <button class="service-card"><i class="fa fa-cloud-arrow-up"></i> حلول سحابية</button>
+    <button class="service-card"><i class="fa fa-shield-halved"></i> أمان وحماية</button>
+  </div>
+
   <!-- Portfolio Projects -->
   <div class="portfolio-container">
     <div class="project-card" data-title="موقع شخصي" data-link="https://example.com" data-source="https://github.com/example" data-stars="⭐⭐⭐⭐">
@@ -50,11 +66,17 @@
     <!-- أضف مشاريع أخرى هنا -->
   </div>
 
-  <!-- Clients -->
+  <!-- Clients Section -->
   <div class="clients-container">
     <div class="client-card"><img src="client1.png" alt="Client 1"></div>
     <div class="client-card"><img src="client2.png" alt="Client 2"></div>
+    <div class="client-card"><img src="client3.png" alt="Client 3"></div>
     <!-- أضف عملاء آخرين -->
+  </div>
+
+  <!-- Footer / Copyright Card -->
+  <div class="footer-card">
+    <h3>جميع حقوق الطبع والنشر محمية | Web Zone</h3>
   </div>
 
   <script src="script.js"></script>
