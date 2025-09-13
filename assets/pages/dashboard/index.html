@@ -1,72 +1,62 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Web Zone | Home</title>
-<link href="style.css" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: { neonblue: '#00e0ff' },
-        keyframes: {
-          appear: { '0%': { opacity: '0', transform: 'translateY(30px) scale(0.95)' }, '100%': { opacity: '1', transform: 'translateY(0) scale(1)' } },
-          neonPulse: { '0%,100%': { boxShadow: '0 0 10px #00e0ff' }, '50%': { boxShadow: '0 0 20px #00e0ff' } }
-        },
-        animation: { appear: 'appear 1s ease forwards', neonPulse: 'neonPulse 1.5s infinite' }
-      }
-    }
-  }
-</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Zone | Home</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-black text-neonblue flex flex-col items-center min-h-screen">
+<body>
 
-<!-- Hero Section -->
-<section class="hero text-center mt-12">
-  <h1 class="text-4xl md:text-5xl font-bold animate-appear">مرحبا بك في Web Zone</h1>
-  <p class="mt-2 text-lg opacity-0 animate-appear delay-300">نحن نقدم أفضل خدمات تصميم وبرمجة المواقع</p>
-  <button id="startBtn" class="mt-4 px-6 py-2 rounded bg-gradient-to-r from-neonblue to-blue-700 hover:from-blue-700 hover:to-neonblue text-white transition duration-300 opacity-0 animate-appear delay-600">ابدأ مشروعك</button>
-</section>
+  <!-- زر ابدأ المشروع -->
+  <button id="startProjectBtn">ابدأ مشروعك</button>
 
-<!-- Services -->
-<section class="services flex flex-wrap justify-center gap-8 mt-12">
-  <div class="service-card" data-icon="fas fa-code" data-title="تطوير مواقع" data-desc="تصميم وبرمجة مواقع ويب احترافية وسريعة الأداء."></div>
-  <div class="service-card" data-icon="fas fa-paint-brush" data-title="تصميم UI/UX" data-desc="واجهات جذابة وتجربة مستخدم سلسة ومريحة."></div>
-  <div class="service-card" data-icon="fas fa-mobile-alt" data-title="تطبيقات الويب" data-desc="تطبيقات متجاوبة تعمل على جميع الأجهزة والمتصفحات."></div>
-  <div class="service-card" data-icon="fas fa-server" data-title="استضافة وصيانة" data-desc="خوادم آمنة وصيانة مستمرة لضمان تشغيل مواقعك بدون مشاكل."></div>
-  <div class="service-card" data-icon="fas fa-chart-line" data-title="تحسين SEO" data-desc="رفع ترتيب موقعك في محركات البحث وزيادة الزيارات العضوية."></div>
-</section>
-
-<!-- Portfolio -->
-<section class="portfolio mt-12">
-  <div class="portfolio-container flex overflow-hidden gap-4">
-    <div class="project-card" data-title="مشروع 1" data-link="https://example.com" data-source="https://github.com/example" data-stars="⭐️⭐️⭐️⭐️⭐️"></div>
-    <div class="project-card" data-title="مشروع 2" data-link="https://example2.com" data-source="https://github.com/example2" data-stars="⭐️⭐️⭐️⭐️"></div>
-  </div>
-  <div class="project-expanded hidden flex flex-col items-center gap-3">
-    <h4 id="expandedTitle"></h4>
-    <div class="buttons flex gap-2">
-      <a id="expandedLink" href="#" target="_blank">زيارة الموقع</a>
-      <a id="expandedSource" href="#" target="_blank">مصدر المشروع</a>
+  <!-- فورم بدء المشروع -->
+  <div id="projectForm" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeForm">&times;</span>
+      <h2>ابدأ مشروعك</h2>
+      <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" id="nameInput" placeholder="اسمك">
+      </div>
+      <div class="input-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" id="emailInput" placeholder="ايميلك">
+      </div>
+      <div class="input-group">
+        <i class="fa fa-file-alt"></i>
+        <textarea id="requestInput" placeholder="طلبك" rows="4"></textarea>
+      </div>
+      <button id="sendBtn"><i class="fa fa-paper-plane"></i> إرسال</button>
     </div>
-    <p id="expandedStars"></p>
-    <button id="closeExpanded">إغلاق</button>
   </div>
-</section>
 
-<!-- Clients -->
-<section class="clients mt-12">
-  <div class="clients-container flex overflow-hidden gap-4">
+  <!-- Portfolio Projects -->
+  <div class="portfolio-container">
+    <div class="project-card" data-title="موقع شخصي" data-link="https://example.com" data-source="https://github.com/example" data-stars="⭐⭐⭐⭐">
+      <iframe src="https://example.com" frameborder="0"></iframe>
+      <div class="overlay">
+        <h3>موقع شخصي</h3>
+      </div>
+    </div>
+    <div class="project-card" data-title="متجر إلكتروني" data-link="https://store.com" data-source="https://github.com/store" data-stars="⭐⭐⭐⭐⭐">
+      <iframe src="https://store.com" frameborder="0"></iframe>
+      <div class="overlay">
+        <h3>متجر إلكتروني</h3>
+      </div>
+    </div>
+    <!-- أضف مشاريع أخرى هنا -->
+  </div>
+
+  <!-- Clients -->
+  <div class="clients-container">
     <div class="client-card"><img src="client1.png" alt="Client 1"></div>
     <div class="client-card"><img src="client2.png" alt="Client 2"></div>
+    <!-- أضف عملاء آخرين -->
   </div>
-</section>
 
-<footer class="mt-12">© 2025 Web Zone</footer>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
