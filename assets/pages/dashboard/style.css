@@ -158,7 +158,7 @@ body {
   opacity: 0;
 }
 
-/* Services Cards - تصغير بنسبة 25% */
+/* Services Cards - مصغرة 25% */
 .services {
   display: flex;
   justify-content: center;
@@ -186,7 +186,7 @@ body {
 .service-card:nth-child(5) { animation-delay: 0.6s; }
 
 .service-card i {
-  font-size: 54px;       /* 75% من 72px */
+  font-size: 54px;       
   color: #00e0ff;
   margin-bottom: 15px;
   transition: 0.3s;
@@ -198,15 +198,15 @@ body {
 }
 
 .service-card h3 {
-  font-size: 21px;       /* 75% من 28px */
+  font-size: 21px;       
   font-weight: 700;
   color: #00e0ff;
   text-shadow: 0 0 9px #00e0ff;
-  margin-bottom: 9px;    /* 75% من 12px */
+  margin-bottom: 9px;    
 }
 
 .service-card p {
-  font-size: 13.5px;     /* 75% من 18px */
+  font-size: 13.5px;     
   color: #00e0ff;
   opacity: 0.8;
 }
@@ -217,7 +217,7 @@ body {
   width: 100%;
   max-width: 1200px;
   margin: 20px 0;
-  z-index: 2;  /* لإظهار الكروت فوق الفيديو */
+  z-index: 2;  
 }
 
 /* Portfolio Slider */
@@ -230,19 +230,21 @@ body {
   position: relative;
 }
 
-/* Project Card - حل مشكلة الظهور */
+/* Project Card - تظهر واحدة فقط */
 .project-card {
   flex: 0 0 300px;
-  display: flex;           /* بدل none */
+  display: none;        
   flex-direction: column;
   background: rgba(0,0,0,0.7);
   border-radius: 20px;
   overflow: hidden;
-  opacity: 1;              /* التأكد من الظهور */
+  opacity: 0;
   transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease;
 }
 
 .project-card.active {
+  display: flex;
+  opacity: 1;
   transform: scale(1.05);
   box-shadow:
     0 0 20px #00e0ff,
@@ -322,8 +324,8 @@ body {
     gap: 20px;
   }
   .service-card {
-    width: 262px;          /* 75% من 350px */
-    padding: 18px;         /* تصغير للـ padding */
+    width: 262px;          
+    padding: 18px;         
   }
   .project-card {
     flex: 0 0 250px;
