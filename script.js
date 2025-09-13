@@ -1,4 +1,3 @@
-// script.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -14,11 +13,12 @@ const firebaseConfig = {
   measurementId: "G-9NLEWJYZ6J"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// تبديل بين الفورمين
+// التبديل بين الكاردين
 window.toggleForms = function () {
   document.getElementById("login-box").classList.toggle("hidden");
   document.getElementById("register-box").classList.toggle("hidden");
@@ -29,15 +29,46 @@ function generateId() {
   return Math.floor(1000000000 + Math.random() * 9000000000).toString();
 }
 
+// تسجيل جديد
+window.register = async function () {
+  const name = document.getElementById("reg-name").value;
+  const select = document.getElementById("country-code");
+  const phone = document.getElementById("reg-phone").value;
+  const email = document.getElementById("reg-email").value;
+  const password = document.getElementById("reg-password").value;
+
+  // جلب بيانات الدولة المختارة
+  const selectedOption = select.options[select.selectedIndex];
+  const countryName = selectedOption.getAttribute("data-name");
+  const countryCode = selectedOption.value;
+  const countryFlag = selectedOption.getAttribute("data-flag");
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    await setDoc(doc(db, "users", user.uid), {
+      id: generateId(),
+      name: name,
+      country: countryName,
+      countryCode: countryCode,
+      countryFlag: countryFlag,
+      phone: phone,
+      email: email,
+      role: "client"
+    });
+
+    alert("✅ تم التسجيل بنجاح!");
+    toggleForms();
+  } catch (error) {
+    alert("❌ خطأ: " + error.message);
+  }
+};
+
 // تسجيل دخول
 window.login = async function () {
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
-
-  if (!email || !password) {
-    alert("❌ الرجاء ملء جميع الحقول!");
-    return;
-  }
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
@@ -47,115 +78,27 @@ window.login = async function () {
   }
 };
 
-// تسجيل جديد
-window.register = async function () {
-  const name = document.getElementById("reg-name").value;
-  const phoneInput = document.getElementById("reg-phone").value;
-  const email = document.getElementById("reg-email").value;
-  const password = document.getElementById("reg-password").value;
-
-  if (!name || !phoneInput || !email || !password) {
-    alert("❌ الرجاء ملء جميع الحقول!");
-    return;
-  }
-
-  // الرقم النهائي: +رمز_الدولة + الرقم
-  const fullPhone = phoneInput.replace(/\s+/g, '');
-
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    await setDoc(doc(db, "users", user.uid), {
-      id: generateId(),
-      name: name,
-      fullPhone: fullPhone,
-      email: email,
-      role: "client"
-    });
-
-    alert("✅ تم التسجيل بنجاح!");
-    toggleForms();
-
-  } catch (error) {
-    alert("❌ خطأ: " + error.message);
-  }
-};
-
-// تحميل قائمة الدول
+// جلب الدول من ملف JSON محلي وعرضها (العلم + الكود فقط)
 async function loadCountries() {
   try {
-    const res = await fetch("https://restcountries.com/v3.1/all");
+    const res = await fetch("assets/Settings/countries.json");
     const countries = await res.json();
     const select = document.getElementById("country-code");
 
-    countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+    countries.sort((a, b) => a.name.localeCompare(b.name));
 
     countries.forEach(c => {
-      if (c.idd && c.idd.root) {
-        const suffix = (c.idd.suffixes && c.idd.suffixes.length > 0) ? c.idd.suffixes[0] : "";
-        const fullCode = `${c.idd.root}${suffix}`;
-
-        const option = document.createElement("option");
-        option.value = fullCode;
-        option.textContent = `${c.flag || ""} ${c.name.common} (+${fullCode})`;
-        select.appendChild(option);
-      }
+      const option = document.createElement("option");
+      option.value = c.code; // الكود فقط
+      option.textContent = `${c.flag} +${c.code}`; // يظهر فقط العلم والكود
+      option.setAttribute("data-name", c.name); // الاسم للفايرستور
+      option.setAttribute("data-flag", c.flag); // العلم للفايرستور
+      select.appendChild(option);
     });
 
-    setDefaultCountry();
-    updatePhoneDisplay();
-
   } catch (err) {
-    console.error("❌ فشل تحميل أكواد الدول:", err);
+    console.error("❌ فشل تحميل الدول من JSON:", err);
   }
 }
 
-// اختيار الدولة تلقائيًا حسب IP
-async function setDefaultCountry() {
-  try {
-    const res = await fetch("https://ipapi.co/json/");
-    const data = await res.json();
-    const countryCode = data.country_calling_code || "+20";
-
-    const select = document.getElementById("country-code");
-    if (select) {
-      const matchedOption = [...select.options].find(opt => opt.value === countryCode.replace("+",""));
-      if (matchedOption) select.value = matchedOption.value;
-    }
-  } catch (err) {
-    console.warn("⚠️ لم نتمكن من تحديد الدولة تلقائيًا:", err);
-  }
-}
-
-// دمج رمز الدولة مع الرقم أثناء الكتابة
-const regPhone = document.getElementById("reg-phone");
-const countrySelect = document.getElementById("country-code");
-
-function updatePhoneDisplay() {
-  const code = countrySelect.value ? `+${countrySelect.value}` : "";
-  const number = regPhone.value.replace(/\D/g, '');
-  const flag = countrySelect.selectedOptions[0]?.textContent.match(/[\p{Emoji}]/u)?.[0] || "";
-
-  regPhone.value = `${flag} ${code} ${number}`;
-}
-
-regPhone.addEventListener("input", () => {
-  updatePhoneDisplay();
-});
-
-countrySelect.addEventListener("change", () => {
-  updatePhoneDisplay();
-});
-
-regPhone.addEventListener("focus", () => {
-  // إزالة العلم مؤقتًا لتسهيل الكتابة
-  regPhone.value = regPhone.value.replace(/^[\p{Emoji}\s]+/, '');
-});
-
-regPhone.addEventListener("blur", () => {
-  updatePhoneDisplay();
-});
-
-// استدعاء تحميل الدول
 loadCountries();
