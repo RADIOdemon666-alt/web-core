@@ -24,3 +24,20 @@ portfolioSlider.addEventListener('wheel', e => {
   e.preventDefault();
   portfolioSlider.scrollLeft += e.deltaY;
 });
+// --- إرسال البيانات على WhatsApp ---
+const sendBtn = document.getElementById('sendBtn');
+sendBtn.addEventListener('click', () => {
+  const name = document.getElementById('nameInput').value.trim();
+  const email = document.getElementById('emailInput').value.trim();
+  const request = document.getElementById('requestInput').value.trim();
+
+  if (!name || !email || !request) {
+    alert('من فضلك املأ جميع الحقول');
+    return;
+  }
+
+  const message = `مرحبًا، أنا ${name}\nالبريد الإلكتروني: ${email}\nطلبي: ${request}`;
+  const waLink = `https://wa.me/201500564191?text=${encodeURIComponent(message)}`;
+  window.open(waLink, '_blank');
+  modal.style.display = 'none';
+});
