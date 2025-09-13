@@ -16,10 +16,11 @@ body {
 #bg-video {
   position: fixed;
   top: 0;
-  left: 50px; /* مسافة ثابتة لليمين */
-  width: calc(100% - 50px); /* عرض الفيديو يقل عشان يبقى ثابت */
-  height: 100%;
+  left: 0;
+  width: 100vw;       /* تغطي عرض الشاشة بالكامل */
+  height: 100vh;      /* تغطي ارتفاع الشاشة بالكامل */
   object-fit: cover;
+  object-position: 50px center; /* تحريك الفيديو داخليًا 50px لليمين */
   z-index: -1;
 }
 /* Hero Section */
