@@ -37,17 +37,17 @@ body {
   width: 280px;
   max-width: 90%;
   color: #fff;
-  transition: 0.3s;
   display: flex;
   flex-direction: column;
   animation: fadeIn 1s ease, electricGlow 3s infinite;
-  visibility: hidden; /* مخفية عند فتح الموقع */
-  opacity: 0;
+  opacity: 1; /* ظاهر دائمًا */
+  visibility: visible; /* ظاهر دائمًا */
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.form-box.show {
-  visibility: visible;
-  opacity: 1;
+.form-box.hide {
+  opacity: 0; /* تختفي تدريجيًا */
+  visibility: hidden;
 }
 
 .card-avatar {
