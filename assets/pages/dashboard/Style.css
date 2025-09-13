@@ -61,7 +61,7 @@ body {
 }
 
 /* General Card Style */
-.card {
+.card, .service-card, .project-card, .clients-logos img {
   position: relative;
   border-radius: 20px;
   transition: 0.4s;
@@ -70,13 +70,23 @@ body {
     0 0 20px rgba(0,224,255,0.3) inset,
     0 5px 15px rgba(0,0,0,0.4);
   color: #00e0ff;
+  animation: appear 0.8s ease forwards;
+  opacity: 0;
 }
 
 /* Services Cards */
+.services {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 30px 0;
+  gap: 35px; /* زيادة المسافة بين الكروت */
+}
+
 .service-card {
   background: rgba(0,0,0,0.7);
   padding: 25px;
-  width: 210px;
+  width: 220px; /* تكبير الكارد */
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -104,9 +114,16 @@ body {
 }
 
 /* Portfolio Cards */
+.portfolio {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 35px; /* نفس المسافة للكروت الأخرى */
+}
+
 .project-card {
-  width: 210px;
-  height: 130px;
+  width: 220px; /* تكبير الكارد */
+  height: 140px; /* زيادة 10px */
   overflow: hidden;
   border-radius: 20px;
 }
@@ -139,7 +156,7 @@ body {
 
 /* Clients Logos */
 .clients-logos img {
-  width: 90px;
+  width: 100px; /* تكبير الكارد 10px */
   filter: brightness(0) invert(1);
   margin:10px;
 }
@@ -155,6 +172,12 @@ body {
   50%{ box-shadow: 0 0 30px #00e0ff; }
   75%{ box-shadow: 0 0 20px #00e0ff; }
   100%{ box-shadow: 0 0 10px #00e0ff; }
+}
+
+/* Appear Animation for Cards */
+@keyframes appear {
+  0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* Modal */
