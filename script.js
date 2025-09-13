@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebas
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-// إعدادات Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCBTPlQVGgqL1MmDuZRSJMlS244AtAzZ6E",
   authDomain: "web-zone-c95aa.firebaseapp.com",
@@ -17,127 +16,138 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// التبديل بين الكاردين
-window.toggleForms = function () {
+window.toggleForms = function() {
   document.getElementById("login-box").classList.toggle("hidden");
   document.getElementById("register-box").classList.toggle("hidden");
 };
 
-// توليد ID عشوائي
 function generateId() {
   return Math.floor(1000000000 + Math.random() * 9000000000).toString();
 }
 
-// رسائل الخطأ
+// الرسائل المعروفة
 const firebaseErrors = {
-  "auth/email-already-in-use": "❌ هذا البريد مستخدم من قبل",
-  "auth/invalid-email": "❌ البريد غير صالح",
-  "auth/weak-password": "❌ كلمة المرور ضعيفة",
-  "auth/user-not-found": "❌ المستخدم غير موجود",
-  "auth/wrong-password": "❌ كلمة المرور خاطئة"
+  "auth/email-already-in-use": "❌ البريد الإلكتروني مستخدم مسبقًا.",
+  "auth/invalid-email": "❌ البريد الإلكتروني غير صالح.",
+  "auth/weak-password": "❌ كلمة المرور ضعيفة.",
+  "auth/user-not-found": "❌ المستخدم غير موجود.",
+  "auth/wrong-password": "❌ كلمة المرور خاطئة."
 };
 
-// عرض الرسائل
-function showMessage(type, text) {
-  const box = document.getElementById("message-box");
-  box.className = "message-box " + type;
-  box.textContent = text;
-  box.style.display = "block";
-  setTimeout(() => box.style.display = "none", 4000);
+function showMessage(msg, type="success") {
+  const messageBox = document.getElementById("message-box");
+  const loginBox = document.getElementById("login-box");
+  const registerBox = document.getElementById("register-box");
+
+  // إخفاء الفورمز أثناء الرسالة
+  loginBox.style.display = "none";
+  registerBox.style.display = "none";
+
+  messageBox.textContent = msg;
+  messageBox.className = `message-box ${type}`;
+  messageBox.style.display = "block";
+
+  setTimeout(() => {
+    messageBox.style.display = "none";
+    loginBox.style.display = "flex";
+    registerBox.style.display = "flex";
+  }, 3000);
 }
 
-// رسالة ترحيب
 function showWelcome(name) {
-  const box = document.getElementById("welcome-box");
-  box.textContent = `أهلاً وسهلاً بك، ${name} 🌟`;
-  box.className = "welcome-box";
-  box.style.display = "block";
+  const welcomeBox = document.getElementById("welcome-box");
+  const loginBox = document.getElementById("login-box");
+
+  loginBox.style.display = "none";
+
+  welcomeBox.textContent = `مرحبًا ${name} 👋`;
+  welcomeBox.style.display = "block";
+
+  setTimeout(() => {
+    welcomeBox.style.display = "none";
+    loginBox.style.display = "flex";
+  }, 3000);
 }
 
 // تسجيل جديد
-window.register = async function () {
-  const name = document.getElementById("reg-name").value;
-  const phone = document.getElementById("reg-phone").value;
-  const email = document.getElementById("reg-email").value;
-  const password = document.getElementById("reg-password").value;
+window.register = async function() {
+  const name = document.getElementById("reg-name").value.trim();
+  const countryInput = document.getElementById("country-code").value.trim();
+  const phone = document.getElementById("reg-phone").value.trim();
+  const email = document.getElementById("reg-email").value.trim();
+  const password = document.getElementById("reg-password").value.trim();
 
-  const countrySelect = document.getElementById("country-code");
-  const selectedIndex = countrySelect.selectedIndex;
-  const countryFlag = countrySelect.options[selectedIndex].text.split(" ")[0];
-  const countryName = countrySelect.options[selectedIndex].text.split(" ")[1];
-  const countryCode = countrySelect.value;
+  if(!name || !countryInput || !phone || !email || !password){
+    showMessage("❌ يرجى ملء جميع الحقول", "error");
+    return;
+  }
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  let countryName = countryInput.split(" (+")[0] || countryInput;
+  let countryCode = countryInput.match(/\+(\d+)/)?.[1] || "";
+
+  try{
+    const userCredential = await createUserWithEmailAndPassword(auth,email,password);
     const user = userCredential.user;
 
-    await setDoc(doc(db, "users", user.uid), {
+    await setDoc(doc(db,"users",user.uid),{
       id: generateId(),
-      name: name,
+      name,
       country: countryName,
-      countryCode: countryCode,
-      countryFlag: countryFlag,
-      phone: phone,
-      email: email,
-      role: "client"
+      countryCode,
+      phone,
+      email,
+      role:"client"
     });
 
-    showMessage("success", "✅ تم التسجيل بنجاح!");
-    showWelcome(name);
-
-    setTimeout(() => {
-      window.location.href = "assets/pages/dashboard/index.html";
-    }, 1500);
-
-  } catch (error) {
-    const msg = firebaseErrors[error.code] || "❌ حدث خطأ غير متوقع";
-    showMessage("error", msg);
+    showMessage("✅ تم التسجيل بنجاح!");
+    toggleForms();
+  }catch(err){
+    showMessage(firebaseErrors[err.code] || "❌ حدث خطأ أثناء التسجيل","error");
   }
 };
 
 // تسجيل دخول
-window.login = async function () {
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
+window.login = async function(){
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value.trim();
 
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  if(!email || !password){
+    showMessage("❌ يرجى إدخال البريد وكلمة المرور","error");
+    return;
+  }
+
+  try{
+    const userCredential = await signInWithEmailAndPassword(auth,email,password);
     const user = userCredential.user;
 
-    showMessage("success", "✅ تم تسجيل الدخول!");
-    showWelcome(user.email);
+    showMessage("✅ تم تسجيل الدخول بنجاح!");
+    showWelcome(user.email.split("@")[0]);
 
-    setTimeout(() => {
-      window.location.href = "assets/pages/dashboard/index.html";
-    }, 1500);
+    setTimeout(()=>{ window.location.href = "assets/pages/dashboard/index.html"; },2000);
 
-  } catch (error) {
-    const msg = firebaseErrors[error.code] || "❌ حدث خطأ غير متوقع";
-    showMessage("error", msg);
+  }catch(err){
+    showMessage(firebaseErrors[err.code] || "❌ حدث خطأ أثناء تسجيل الدخول","error");
   }
 };
 
-// تحميل الدول من JSON وعرضها في <select>
-async function loadCountries() {
-  try {
+// جلب الدول
+async function loadCountries(){
+  try{
     const res = await fetch("assets/settings/countries.json");
     const countries = await res.json();
+    const datalist = document.getElementById("countries-list");
 
-    const select = document.getElementById("country-code");
+    countries.sort((a,b)=>a.name.localeCompare(b.name));
 
-    countries.sort((a, b) => a.name.localeCompare(b.name));
-
-    countries.forEach(c => {
+    countries.forEach(c=>{
       const option = document.createElement("option");
-      option.value = c.code; // رمز الدولة فقط
-      option.textContent = `${c.flag} ${c.name} (+${c.code})`; // علم + اسم + رمز
-      select.appendChild(option);
+      option.value = `${c.name} (+${c.code})`;
+      datalist.appendChild(option);
     });
-
-  } catch (err) {
-    console.error("❌ فشل تحميل الدول من JSON:", err);
+  }catch(err){
+    showMessage("❌ فشل تحميل الدول","error");
+    console.error(err);
   }
 }
 
-// تنفيذ تحميل الدول عند فتح الصفحة
 loadCountries();
