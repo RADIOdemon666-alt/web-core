@@ -22,9 +22,13 @@
   </video>
 
   <div class="container">
+    <!-- رسائل -->
+    <div id="message-box" class="message-box hidden"></div>
+    <!-- الترحيب -->
+    <div id="welcome-box" class="welcome-box hidden"></div>
+
     <!-- تسجيل الدخول -->
     <div class="form-box" id="login-box">
-      <!-- صورة دائرية فوق الفورم -->
       <div class="card-avatar">
         <img src="https://files.catbox.moe/caohoh.jpg" alt="Avatar">
       </div>
@@ -45,7 +49,6 @@
 
     <!-- تسجيل جديد -->
     <div class="form-box hidden" id="register-box">
-      <!-- صورة دائرية فوق الفورم -->
       <div class="card-avatar">
         <img src="https://files.catbox.moe/caohoh.jpg" alt="Avatar">
       </div>
@@ -56,7 +59,7 @@
       </div>
       <div class="input-group">
         <i class="fa-solid fa-flag"></i>
-        <select id="country-code"></select>
+        <input type="text" id="country-code" placeholder="اختر الدولة">
       </div>
       <div class="input-group">
         <i class="fa-solid fa-phone"></i>
