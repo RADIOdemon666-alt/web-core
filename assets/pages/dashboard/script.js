@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Projects Slider ---
   const projects = document.querySelectorAll('.project-card');
   let currentIndex = 0;
-
   projects[currentIndex].classList.add('active');
 
   const btnLeft = document.querySelector('.slider-btn-left');
@@ -48,16 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- إرسال البيانات على WhatsApp ---
   const sendBtn = document.getElementById('sendBtn');
-  const nameInput = document.getElementById('nameInput');
-  const emailInput = document.getElementById('emailInput');
-  const requestInput = document.getElementById('requestInput');
-
   sendBtn.addEventListener('click', (e) => {
-    e.preventDefault(); // يمنع أي سلوك افتراضي للزر
+    e.preventDefault(); // منع أي سلوك افتراضي للزر
 
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
-    const request = requestInput.value.trim();
+    const name = document.getElementById('nameInput').value.trim();
+    const email = document.getElementById('emailInput').value.trim();
+    const request = document.getElementById('requestInput').value.trim();
 
     if (!name || !email || !request) {
       alert('من فضلك املأ جميع الحقول');
@@ -68,10 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const waLink = `https://wa.me/201500564191?text=${encodeURIComponent(message)}`;
     window.open(waLink, '_blank');
 
-    // تفريغ الحقول وإغلاق المودال
-    nameInput.value = '';
-    emailInput.value = '';
-    requestInput.value = '';
+    // اغلاق المودال بعد الإرسال
     modal.style.display = 'none';
+
+    // مسح الحقول بعد الإرسال
+    document.getElementById('nameInput').value = '';
+    document.getElementById('emailInput').value = '';
+    document.getElementById('requestInput').value = '';
   });
 });
