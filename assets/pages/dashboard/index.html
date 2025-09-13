@@ -14,11 +14,32 @@
 <body>
 
   <!-- Hero Section -->
-  <section class="hero">
+  <div class="hero">
     <h1>مرحبا بك في Web Zone</h1>
-    <p>نحن نقدم أفضل خدمات تطوير المواقع والتطبيقات</p>
-    <button>ابدا مشروعك</button>
-  </section>
+    <p>نحن نصنع مواقع ويب احترافية ومبتكرة</p>
+    <button id="startProjectBtn"><i class="fa fa-rocket"></i> ابدأ مشروعك</button>
+  </div>
+
+  <!-- Project Form Modal -->
+  <div id="projectForm" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeForm">&times;</span>
+      <h2>ابدأ مشروعك</h2>
+      <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" id="nameInput" placeholder="اسمك">
+      </div>
+      <div class="input-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" id="emailInput" placeholder="ايميلك">
+      </div>
+      <div class="input-group">
+        <i class="fa fa-file-alt"></i>
+        <textarea id="requestInput" placeholder="طلبك" rows="4"></textarea>
+      </div>
+      <button id="sendBtn"><i class="fa fa-paper-plane"></i> إرسال</button>
+    </div>
+  </div>
 
   <!-- Services Section -->
   <section class="services">
@@ -77,10 +98,10 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    جميع الحقوق محفوظة © 2025 Web Zone
-  </footer>
+  <!-- Footer / Copyright Card -->
+  <div class="footer-card">
+    <h3>جميع حقوق الطبع والنشر محمية | Web Zone</h3>
+  </div>
 
   <!-- JS -->
   <script src="script.js"></script>
