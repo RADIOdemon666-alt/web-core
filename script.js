@@ -140,7 +140,7 @@ window.login = async function() {
 // تحميل الدول وعرضها في custom select
 async function loadCountriesInput() {
   try {
-    const res = await fetch("assets/settings/countries.json");
+    const res = await fetch("assets/Settings/countries.json");
     const countries = await res.json();
     countries.sort((a,b)=>a.name.localeCompare(b.name));
 
