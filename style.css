@@ -10,7 +10,7 @@ body {
   background: #000;
 }
 
-/* خلفية الفيديو */
+/* خلفية فيديو */
 #bg-video {
   position: fixed;
   top: 0;
@@ -22,22 +22,21 @@ body {
   object-position: center;
 }
 
-/* للموبايل: Stretch */
 @media (max-width: 600px) {
   #bg-video {
     object-fit: fill;
   }
 }
 
-/* الكونتينر */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  flex-direction: column;
 }
 
-/* الصندوق */
+/* الكارد */
 .form-box {
   background: rgba(0, 0, 0, 0.8);
   position: relative;
@@ -50,8 +49,9 @@ body {
   color: #fff;
   transition: 0.3s;
   animation: fadeIn 1s ease, electricGlow 3s infinite;
+  margin-bottom: 20px;
 }
-/* صورة دائرية فوق الفورم */
+
 .card-avatar {
   width: 70px;
   height: 70px;
@@ -64,7 +64,7 @@ body {
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: -35px; /* نصف حجم الصورة فوق الكارد */
+  top: -35px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -77,10 +77,6 @@ body {
   object-fit: cover;
   border-radius: 50%;
 }
-.form-box:hover {
-  box-shadow: 0 0 35px rgba(0, 200, 255, 1);
-  transform: scale(1.02);
-}
 
 .form-box h2 {
   margin-bottom: 15px;
@@ -90,7 +86,6 @@ body {
   text-shadow: 0 0 8px #00e0ff;
 }
 
-/* مجموعة الإنبت + أيقونة */
 .input-group {
   display: flex;
   align-items: center;
@@ -104,12 +99,10 @@ body {
 .input-group i {
   color: #00e0ff;
   margin-left: 8px;
-  transition: 0.3s;
   text-shadow: 0 0 8px rgba(0, 224, 255, 0.6);
 }
 
-.input-group input,
-.input-group select {
+.input-group input {
   flex: 1;
   border: none;
   outline: none;
@@ -123,7 +116,6 @@ body {
   color: #ccc;
 }
 
-/* تأثير عند التركيز */
 .input-group:focus-within {
   box-shadow: 0 0 12px #00e0ff;
   background: rgba(0, 200, 255, 0.15);
@@ -135,7 +127,6 @@ body {
   text-shadow: 0 0 12px #00e0ff, 0 0 24px #00e0ff;
 }
 
-/* الأزرار */
 .form-box button {
   width: 100%;
   padding: 10px;
@@ -154,7 +145,6 @@ body {
   box-shadow: 0 0 15px #00e0ff;
 }
 
-/* الروابط */
 .form-box p {
   margin-top: 10px;
   font-size: 12px;
@@ -170,9 +160,47 @@ body {
   text-decoration: underline;
 }
 
-/* إخفاء */
 .hidden {
   display: none;
+}
+
+/* الرسائل */
+.message-box {
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  display: none;
+  width: 280px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 224, 255, 0.7);
+  animation: fadeIn 0.5s ease;
+}
+
+.message-box.success {
+  background-color: rgba(0,255,0,0.2);
+  color: #0f0;
+}
+
+.message-box.error {
+  background-color: rgba(255,0,0,0.2);
+  color: #f00;
+}
+
+/* الترحيب */
+.welcome-box {
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  background: linear-gradient(90deg, #00e0ff, #0077ff);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  display: none;
+  box-shadow: 0 0 15px #00e0ff;
+  animation: fadeIn 1s ease, electricGlow 3s infinite;
 }
 
 /* أنيميشن الدخول */
@@ -181,15 +209,13 @@ body {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* أنيميشن الأيقونات */
 @keyframes pulseIcon {
   0%   { transform: scale(1);   opacity: 1; }
   50%  { transform: scale(1.2); opacity: 0.8; }
   100% { transform: scale(1);   opacity: 1; }
 }
 
-/* وميض كهربائي للكارد */
 @keyframes electricGlow {
   0%, 100% { box-shadow: 0 0 25px rgba(0, 200, 255, 0.7); }
   50%      { box-shadow: 0 0 45px rgba(0, 200, 255, 1), 0 0 70px rgba(0, 200, 255, 0.6); }
-  }
+}
