@@ -3,20 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تسجيل دخول | Educore</title>
+  <title>Web-Zone</title>
 
-  <!-- خط كايرو -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <!-- أيقونات Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- ملف التنسيقات -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- خلفية فيديو -->
   <video autoplay muted loop playsinline id="bg-video">
     <source src="https://files.catbox.moe/t1r7ws.mp4" type="video/mp4">
   </video>
@@ -26,7 +20,7 @@
     <!-- رسائل الخطأ/النجاح -->
     <div id="message-box" class="message-box hidden"></div>
 
-    <!-- الترحيب بعد تسجيل الدخول -->
+    <!-- الترحيب -->
     <div id="welcome-box" class="welcome-box hidden"></div>
 
     <!-- تسجيل الدخول -->
@@ -61,8 +55,10 @@
       </div>
       <div class="input-group">
         <i class="fa-solid fa-flag"></i>
-        <input list="countries-list" id="country-code" placeholder="اختر الدولة" required>
-        <datalist id="countries-list"></datalist>
+        <div class="custom-select" id="country-select">
+          <div class="selected">اختر الدولة</div>
+          <ul class="options hidden" id="country-options"></ul>
+        </div>
       </div>
       <div class="input-group">
         <i class="fa-solid fa-phone"></i>
