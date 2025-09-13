@@ -3,6 +3,7 @@ body {
   margin: 0;
   font-family: "Cairo", sans-serif;
   background: #000;
+  color: #00e0ff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,9 +11,20 @@ body {
   overflow-x: hidden;
 }
 
-/* زر ابدأ المشروع */
-#startProjectBtn {
-  margin-top: 30px;
+/* Hero Section */
+.hero {
+  text-align: center;
+  margin: 30px 0;
+}
+.hero h1 {
+  font-size: 48px;
+  text-shadow: 0 0 15px #00e0ff;
+}
+.hero p {
+  font-size: 18px;
+  margin: 10px 0 20px 0;
+}
+.hero button {
   padding: 12px 25px;
   border: none;
   border-radius: 12px;
@@ -23,7 +35,7 @@ body {
   box-shadow: 0 0 10px #00e0ff;
   transition: 0.3s;
 }
-#startProjectBtn:hover {
+.hero button:hover {
   background: linear-gradient(90deg,#0077ff,#00e0ff);
   box-shadow: 0 0 20px #00e0ff;
 }
@@ -39,24 +51,20 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 .modal-content {
   background: rgba(0,0,0,0.95);
   padding: 25px;
   border-radius: 20px;
-  width: 320px;
+  width: 350px;
   text-align: center;
-  color: #fff;
+  color: #00e0ff;
   position: relative;
   box-shadow: 0 0 25px #00e0ff;
   animation: appear 0.5s ease forwards;
 }
-
 .modal-content h2 {
-  color: #00e0ff;
   margin-bottom: 15px;
 }
-
 .modal-content .close {
   position: absolute;
   top: 10px; right: 15px;
@@ -68,18 +76,16 @@ body {
 .input-group {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   border-radius: 10px;
   margin: 8px 0;
   padding: 8px 12px;
 }
-
 .input-group i {
   color: #00e0ff;
   margin-left: 8px;
   font-size: 18px;
 }
-
 .input-group input,
 .input-group textarea {
   flex: 1;
@@ -91,13 +97,13 @@ body {
   padding: 6px;
   border-radius: 5px;
 }
-
 .input-group input::placeholder,
 .input-group textarea::placeholder {
   color: #00e0ff;
   opacity: 0.7;
 }
 
+/* Send Button */
 #sendBtn {
   width: 100%;
   padding: 10px;
@@ -113,6 +119,37 @@ body {
 #sendBtn:hover {
   background: linear-gradient(90deg,#0077ff,#00e0ff);
   box-shadow:0 0 15px #00e0ff;
+}
+
+/* Services Section */
+.services-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px 0;
+}
+.service-card {
+  background: rgba(0,0,0,0.7);
+  width: 180px;
+  height: 120px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #00e0ff, 0 0 20px #00e0ff inset;
+  font-size: 14px;
+}
+.service-card i {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px #00e0ff, 0 0 30px #00e0ff inset;
 }
 
 /* Portfolio Projects */
@@ -153,10 +190,10 @@ body {
 }
 .project-card:hover .overlay {
   opacity:1;
-  box-shadow:0 0 20px #00e0ff;
+  animation: neonBorder 1.5s linear infinite;
 }
 
-/* Clients */
+/* Clients Section */
 .clients-container {
   display: flex;
   overflow-x: auto;
@@ -169,16 +206,42 @@ body {
   height: 120px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 0 15px #00e0ff;
-  transition:0.3s;
+  box-shadow: 0 0 20px #00e0ff;
+  transition: 0.3s;
 }
 .client-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+.client-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px #00e0ff;
+}
 
-/* Animations */
+/* Footer / Copyright Card */
+.footer-card {
+  width: 100%;
+  max-width: 1200px;
+  background: rgba(0,0,0,0.8);
+  margin-top: 40px;
+  padding: 25px;
+  text-align: center;
+  border-radius: 20px;
+  box-shadow: 0 0 20px #00e0ff;
+  font-weight: bold;
+}
+
+/* Neon Border Animation */
+@keyframes neonBorder {
+  0%{ box-shadow:0 0 10px #00e0ff; }
+  25%{ box-shadow:0 0 20px #00e0ff; }
+  50%{ box-shadow:0 0 30px #00e0ff; }
+  75%{ box-shadow:0 0 20px #00e0ff; }
+  100%{ box-shadow:0 0 10px #00e0ff; }
+}
+
+/* Modal Appear Animation */
 @keyframes appear {
   from { opacity:0; transform: scale(0.95);}
   to { opacity:1; transform: scale(1);}
