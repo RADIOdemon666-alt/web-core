@@ -3,82 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Zone | Home</title>
+  <title>Home | Web Zone</title>
+
+  <!-- الخط -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
   <!-- Hero Section -->
-  <div class="hero">
+  <section class="hero">
     <h1>مرحبا بك في Web Zone</h1>
-    <p>نحن نصنع مواقع ويب احترافية ومبتكرة</p>
-    <button id="startProjectBtn"><i class="fa fa-rocket"></i> ابدأ مشروعك</button>
-  </div>
-
-  <!-- Project Form Modal -->
-  <div id="projectForm" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeForm">&times;</span>
-      <h2>ابدأ مشروعك</h2>
-      <div class="input-group">
-        <i class="fa fa-user"></i>
-        <input type="text" id="nameInput" placeholder="اسمك">
-      </div>
-      <div class="input-group">
-        <i class="fa fa-envelope"></i>
-        <input type="email" id="emailInput" placeholder="ايميلك">
-      </div>
-      <div class="input-group">
-        <i class="fa fa-file-alt"></i>
-        <textarea id="requestInput" placeholder="طلبك" rows="4"></textarea>
-      </div>
-      <button id="sendBtn"><i class="fa fa-paper-plane"></i> إرسال</button>
-    </div>
-  </div>
+    <p>نحن نقدم أفضل خدمات تطوير المواقع والتطبيقات</p>
+    <button>ابدا مشروعك</button>
+  </section>
 
   <!-- Services Section -->
-  <div class="services-container">
-    <button class="service-card"><i class="fa fa-laptop-code"></i> تطوير مواقع</button>
-    <button class="service-card"><i class="fa fa-shopping-cart"></i> متاجر إلكترونية</button>
-    <button class="service-card"><i class="fa fa-mobile-screen-button"></i> تطبيقات موبايل</button>
-    <button class="service-card"><i class="fa fa-server"></i> استضافة وخوادم</button>
-    <button class="service-card"><i class="fa fa-search"></i> تحسين SEO</button>
-    <button class="service-card"><i class="fa fa-paint-brush"></i> تصميم واجهات</button>
-    <button class="service-card"><i class="fa fa-cloud-arrow-up"></i> حلول سحابية</button>
-    <button class="service-card"><i class="fa fa-shield-halved"></i> أمان وحماية</button>
-  </div>
+  <section class="services">
+    <div class="service-card card">
+      <i class="fa-solid fa-code"></i>
+      <h3>تطوير المواقع</h3>
+      <p>نقوم بإنشاء مواقع ويب حديثة وسريعة الاستجابة.</p>
+    </div>
+    <div class="service-card card">
+      <i class="fa-solid fa-paint-brush"></i>
+      <h3>تصميم واجهات</h3>
+      <p>تصاميم أنيقة وجذابة تتناسب مع علامتك التجارية.</p>
+    </div>
+    <div class="service-card card">
+      <i class="fa-solid fa-mobile-screen-button"></i>
+      <h3>تطبيقات الموبايل</h3>
+      <p>تطوير تطبيقات Android و iOS بجودة عالية.</p>
+    </div>
+  </section>
 
-  <!-- Portfolio Projects -->
-  <div class="portfolio-container">
-    <div class="project-card" data-title="موقع شخصي" data-link="https://example.com" data-source="https://github.com/example" data-stars="⭐⭐⭐⭐">
-      <iframe src="https://example.com" frameborder="0"></iframe>
-      <div class="overlay">
-        <h3>موقع شخصي</h3>
+  <!-- Portfolio Section -->
+  <section class="portfolio">
+    <div class="portfolio-slider">
+      <div class="project-card card">
+        <iframe src="https://example.com" frameborder="0"></iframe>
+        <div class="project-info">
+          <h4>مشروع 1</h4>
+          <div class="buttons">
+            <a href="https://example.com" target="_blank">زيارة الموقع</a>
+            <a href="https://github.com/example" target="_blank">مصدر المشروع</a>
+          </div>
+          <p>⭐️⭐️⭐️⭐️⭐️</p>
+        </div>
+      </div>
+      <div class="project-card card">
+        <iframe src="https://example2.com" frameborder="0"></iframe>
+        <div class="project-info">
+          <h4>مشروع 2</h4>
+          <div class="buttons">
+            <a href="https://example2.com" target="_blank">زيارة الموقع</a>
+            <a href="https://github.com/example2" target="_blank">مصدر المشروع</a>
+          </div>
+          <p>⭐️⭐️⭐️⭐️</p>
+        </div>
       </div>
     </div>
-    <div class="project-card" data-title="متجر إلكتروني" data-link="https://store.com" data-source="https://github.com/store" data-stars="⭐⭐⭐⭐⭐">
-      <iframe src="https://store.com" frameborder="0"></iframe>
-      <div class="overlay">
-        <h3>متجر إلكتروني</h3>
-      </div>
-    </div>
-    <!-- أضف مشاريع أخرى هنا -->
-  </div>
+  </section>
 
   <!-- Clients Section -->
-  <div class="clients-container">
-    <div class="client-card"><img src="client1.png" alt="Client 1"></div>
-    <div class="client-card"><img src="client2.png" alt="Client 2"></div>
-    <div class="client-card"><img src="client3.png" alt="Client 3"></div>
-    <!-- أضف عملاء آخرين -->
-  </div>
+  <section class="clients">
+    <h2>عملاؤنا</h2>
+    <div class="clients-slider">
+      <div class="client-card card"><img src="assets/clients/client1.png" alt="Client 1"></div>
+      <div class="client-card card"><img src="assets/clients/client2.png" alt="Client 2"></div>
+      <div class="client-card card"><img src="assets/clients/client3.png" alt="Client 3"></div>
+    </div>
+  </section>
 
-  <!-- Footer / Copyright Card -->
-  <div class="footer-card">
-    <h3>جميع حقوق الطبع والنشر محمية | Web Zone</h3>
-  </div>
+  <!-- Footer -->
+  <footer>
+    جميع الحقوق محفوظة © 2025 Web Zone
+  </footer>
 
+  <!-- JS -->
   <script src="script.js"></script>
 </body>
 </html>
