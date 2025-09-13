@@ -27,19 +27,29 @@ body {
   margin: 10px 0;
 }
 
+/* زر ابدأ مشروعك */
 .hero button {
-  padding: 10px 20px;
+  padding: 12px 25px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   background: linear-gradient(90deg,#00e0ff,#0077ff);
   color: #fff;
   cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   transition: 0.3s;
+}
+
+.hero button i {
+  font-size: 20px;
 }
 
 .hero button:hover {
   background: linear-gradient(90deg,#0077ff,#00e0ff);
-  box-shadow: 0 0 15px #00e0ff;
+  box-shadow: 0 0 20px #00e0ff;
+  transform: scale(1.05);
 }
 
 /* Modal Form */
@@ -48,7 +58,8 @@ body {
   position: fixed;
   z-index: 1000;
   left: 0; top: 0;
-  width: 100%; height: 100%;
+  width: 100%; 
+  height: 100%;
   background: rgba(0,0,0,0.85);
   justify-content: center;
   align-items: center;
@@ -56,23 +67,28 @@ body {
 
 .modal-content {
   background: rgba(0,0,0,0.95);
-  padding: 25px;
-  border-radius: 20px;
-  width: 350px;
+  padding: 30px 25px;
+  border-radius: 25px;
+  width: 400px;       /* حجم واضح للمودال */
+  max-width: 90%;     /* عرض متجاوب للشاشات الصغيرة */
   text-align: center;
   color: #00e0ff;
   position: relative;
-  box-shadow: 0 0 25px #00e0ff;
+  box-shadow: 0 0 35px #00e0ff;
   animation: appear 0.5s ease forwards;
 }
 
 .modal-content h2 {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .modal-content .close {
   position: absolute;
-  top: 10px; right: 15px;
+  top: 12px; right: 15px;
   font-size: 24px;
   cursor: pointer;
 }
@@ -80,7 +96,7 @@ body {
 .modal-content input,
 .modal-content textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 15px;
   border-radius: 10px;
   border: none;
@@ -96,18 +112,23 @@ body {
 }
 
 .modal-content button {
-  padding: 10px 20px;
+  padding: 12px 25px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   background: linear-gradient(90deg,#00e0ff,#0077ff);
   color: #fff;
   cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   transition: 0.3s;
 }
 
 .modal-content button:hover {
   background: linear-gradient(90deg,#0077ff,#00e0ff);
-  box-shadow: 0 0 15px #00e0ff;
+  box-shadow: 0 0 20px #00e0ff;
+  transform: scale(1.05);
 }
 
 /* General Card Style */
@@ -141,12 +162,19 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: 0.3s;
 }
 
 .service-card i {
-  font-size: 32px;
+  font-size: 36px;
   color: #00e0ff;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  transition: 0.3s;
+}
+
+.service-card:hover i {
+  color: #0077ff;
+  transform: scale(1.2);
 }
 
 .service-card h3 {
@@ -177,14 +205,14 @@ body {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  overflow: hidden; /* منع السحب اليدوي */
+  overflow: hidden;
   position: relative;
 }
 
 /* Project Card */
 .project-card {
   flex: 0 0 300px;
-  display: none; /* مخفي افتراضيًا */
+  display: none;
   flex-direction: column;
   background: rgba(0,0,0,0.7);
   border-radius: 20px;
@@ -248,25 +276,6 @@ body {
   box-shadow: 0 0 15px #00e0ff;
 }
 
-/* Clients Slider */
-.clients-slider {
-  display: flex;
-  overflow-x: auto;
-  gap: 25px;
-  padding: 20px 0;
-}
-
-.client-card {
-  flex: 0 0 150px;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
-.client-card img {
-  width: 150px;
-  border-radius: 20px;
-  object-fit: cover;
-}
-
 /* Appear Animation for Cards */
 @keyframes appear {
   0% { opacity: 0; transform: translateY(30px) scale(0.95); }
@@ -284,4 +293,27 @@ body {
   border-radius: 20px;
   box-shadow: 0 0 20px #00e0ff;
   font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .services {
+    gap: 20px;
+  }
+  .service-card {
+    width: 180px;
+  }
+  .project-card {
+    flex: 0 0 250px;
+  }
+  .hero h1 {
+    font-size: 36px;
+  }
+  .hero p {
+    font-size: 16px;
+  }
+  .hero button {
+    font-size: 14px;
+    padding: 10px 18px;
+  }
 }
