@@ -22,9 +22,11 @@
   </video>
 
   <div class="container">
-    <!-- رسائل -->
+
+    <!-- رسائل الخطأ/النجاح -->
     <div id="message-box" class="message-box hidden"></div>
-    <!-- الترحيب -->
+
+    <!-- الترحيب بعد تسجيل الدخول -->
     <div id="welcome-box" class="welcome-box hidden"></div>
 
     <!-- تسجيل الدخول -->
@@ -38,11 +40,9 @@
         <input type="email" id="login-email" placeholder="البريد الإلكتروني" required>
       </div>
       <div class="input-group">
-  <i class="fa-solid fa-flag"></i>
-  <select id="country-code" required>
-    <option value="">اختر الدولة</option>
-  </select>
-</div>
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="login-password" placeholder="كلمة المرور" required>
+      </div>
       <button type="button" onclick="login()">دخول</button>
       <p>ليس لديك حساب؟
         <a href="javascript:void(0)" onclick="toggleForms()">سجّل الآن</a>
@@ -61,7 +61,8 @@
       </div>
       <div class="input-group">
         <i class="fa-solid fa-flag"></i>
-        <input type="text" id="country-code" placeholder="اختر الدولة">
+        <input list="countries-list" id="country-code" placeholder="اختر الدولة" required>
+        <datalist id="countries-list"></datalist>
       </div>
       <div class="input-group">
         <i class="fa-solid fa-phone"></i>
@@ -82,6 +83,6 @@
     </div>
   </div>
 
-  <script src="script.js" type="module"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
