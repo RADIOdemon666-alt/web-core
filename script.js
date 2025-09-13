@@ -1,197 +1,167 @@
-body {
-  margin: 0;
-  font-family: "Cairo", sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-  background: #000;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+// إعدادات Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCBTPlQVGgqL1MmDuZRSJMlS244AtAzZ6E",
+  authDomain: "web-zone-c95aa.firebaseapp.com",
+  projectId: "web-zone-c95aa",
+  storageBucket: "web-zone-c95aa.firebasestorage.app",
+  messagingSenderId: "776469157795",
+  appId: "1:776469157795:web:d69518695895cff22e2c16",
+  measurementId: "G-9NLEWJYZ6J"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// توليد ID عشوائي 10 أرقام
+function generateId() {
+  return Math.floor(1000000000 + Math.random() * 9000000000).toString();
 }
 
-#bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  min-width: 100%;
-  min-height: 100%;
-  z-index: -1;
-  object-fit: cover;
-  object-position: center;
+// الرسائل
+function showMessage(msg, type="error") {
+  const messageBox = document.getElementById("message-box");
+  const loginBox = document.getElementById("login-box");
+  const registerBox = document.getElementById("register-box");
+  messageBox.textContent = msg;
+  messageBox.className = type==="error" ? "message-box error" : "message-box success";
+  messageBox.style.display = "block";
+
+  // إخفاء الكارد أثناء الرسالة
+  loginBox.style.visibility = "hidden";
+  registerBox.style.visibility = "hidden";
+
+  setTimeout(()=>{
+    messageBox.style.display = "none";
+    loginBox.style.visibility = "visible";
+    registerBox.style.visibility = "visible";
+  }, 3000);
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+// الترحيب
+function showWelcome(msg) {
+  const welcomeBox = document.getElementById("welcome-box");
+  welcomeBox.textContent = msg;
+  welcomeBox.style.display = "block";
 }
 
-.form-box {
-  background: rgba(0, 0, 0, 0.8);
-  position: relative;
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 0 25px rgba(0, 200, 255, 0.7);
-  text-align: center;
-  width: 280px;
-  max-width: 90%;
-  color: #fff;
-  transition: 0.3s;
-  display: flex;
-  flex-direction: column;
-  animation: fadeIn 1s ease, electricGlow 3s infinite;
+// التبديل بين الكاردين
+window.toggleForms = function() {
+  const loginBox = document.getElementById("login-box");
+  const registerBox = document.getElementById("register-box");
+  loginBox.classList.toggle("hidden");
+  registerBox.classList.toggle("hidden");
+};
+
+// تسجيل جديد
+window.register = async function() {
+  const name = document.getElementById("reg-name").value;
+  const phone = document.getElementById("reg-phone").value;
+  const email = document.getElementById("reg-email").value;
+  const password = document.getElementById("reg-password").value;
+
+  // الدول
+  const selected = document.querySelector("#country-select .selected");
+  const countryName = selected.dataset.name;
+  const countryCode = selected.dataset.code;
+  const countryFlag = selected.dataset.flag;
+
+  if(!name || !phone || !email || !password || !countryName){
+    showMessage("❌ الرجاء تعبئة جميع الحقول واختيار الدولة", "error");
+    return;
+  }
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    await setDoc(doc(db, "users", user.uid), {
+      id: generateId(),
+      name: name,
+      country: countryName,
+      countryCode: countryCode,
+      countryFlag: countryFlag,
+      phone: phone,
+      email: email,
+      role: "client"
+    });
+
+    showMessage("✅ تم التسجيل بنجاح!", "success");
+    toggleForms();
+
+  } catch (error) {
+    let msg = "❌ خطأ غير معروف";
+    if(error.code==="auth/email-already-in-use") msg="❌ البريد الإلكتروني مستخدم مسبقًا";
+    else if(error.code==="auth/invalid-email") msg="❌ البريد الإلكتروني غير صالح";
+    else if(error.code==="auth/weak-password") msg="❌ كلمة المرور ضعيفة";
+    showMessage(msg, "error");
+    console.error(error);
+  }
+};
+
+// تسجيل دخول
+window.login = async function() {
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
+
+  if(!email || !password){
+    showMessage("❌ الرجاء إدخال البريد الإلكتروني وكلمة المرور", "error");
+    return;
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    showWelcome(`🎉 مرحبًا بك!`);
+    setTimeout(()=>{
+      window.location.href = "assets/pages/dashboard/index.html";
+    }, 1500);
+  } catch(error) {
+    let msg = "❌ البريد أو كلمة المرور غير صحيحة";
+    showMessage(msg, "error");
+    console.error(error);
+  }
+};
+
+// جلب الدول وعرضها بشكل Discord style
+async function loadCountriesDiscord() {
+  try {
+    const res = await fetch("assets/settings/countries.json");
+    const countries = await res.json();
+    countries.sort((a,b)=>a.name.localeCompare(b.name));
+
+    const select = document.getElementById("country-select");
+    const selected = select.querySelector(".selected");
+    const optionsList = select.querySelector(".options");
+
+    countries.forEach(c=>{
+      const li = document.createElement("li");
+      li.textContent = `${c.flag} ${c.name} (+${c.code})`;
+      li.dataset.name = c.name;
+      li.dataset.code = c.code;
+      li.dataset.flag = c.flag;
+      optionsList.appendChild(li);
+
+      li.addEventListener("click", ()=>{
+        selected.textContent = li.textContent;
+        selected.dataset.name = li.dataset.name;
+        selected.dataset.code = li.dataset.code;
+        selected.dataset.flag = li.dataset.flag;
+        optionsList.classList.add("hidden");
+      });
+    });
+
+    selected.addEventListener("click", ()=>{
+      optionsList.classList.toggle("hidden");
+    });
+
+  } catch(err){
+    showMessage("❌ فشل تحميل الدول", "error");
+    console.error(err);
+  }
 }
 
-.card-avatar {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: 2px solid #00e0ff;
-  box-shadow: 0 0 10px #00e0ff, 0 0 20px #00e0ff inset;
-  overflow: hidden;
-  background: rgba(0,0,0,0.25);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: -35px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  animation: electricGlow 3s infinite;
-}
-
-.card-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.form-box h2 {
-  margin-bottom: 15px;
-  font-weight: 700;
-  font-size: 18px;
-  color: #00e0ff;
-  text-shadow: 0 0 8px #00e0ff;
-}
-
-.input-group {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  margin: 8px 0;
-  padding: 8px 12px;
-  transition: 0.3s;
-}
-
-.input-group i {
-  color: #00e0ff;
-  margin-left: 8px;
-  transition: 0.3s;
-  text-shadow: 0 0 8px rgba(0, 224, 255, 0.6);
-}
-
-.input-group input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: rgba(0,0,0,0.2);
-  color: #fff;
-  font-size: 13px;
-  padding: 6px;
-  border-radius: 5px;
-}
-
-.input-group input::placeholder {
-  color: #ccc;
-}
-
-.input-group:focus-within {
-  box-shadow: 0 0 12px #00e0ff;
-  background: rgba(0, 200, 255, 0.15);
-}
-
-.input-group:focus-within i {
-  color: #fff;
-  animation: pulseIcon 1s infinite;
-  text-shadow: 0 0 12px #00e0ff, 0 0 24px #00e0ff;
-}
-
-.form-box button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 12px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #00e0ff, #0077ff);
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.form-box button:hover {
-  background: linear-gradient(90deg, #0077ff, #00e0ff);
-  box-shadow: 0 0 15px #00e0ff;
-}
-
-.hidden { display: none; }
-
-.message-box, .welcome-box {
-  padding: 10px 15px;
-  border-radius: 8px;
-  font-weight: bold;
-  width: 280px;
-  max-width: 90%;
-  text-align: center;
-  position: absolute;
-  top: -70px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: none;
-  z-index: 10;
-  background: rgba(0,0,0,0.85);
-  animation: fadeIn 0.3s ease;
-}
-
-.message-box.error { color: #ff5555; box-shadow: 0 0 15px #ff5555; }
-.welcome-box { color: #00ff99; box-shadow: 0 0 15px #00ff99; }
-
-/* Custom Select */
-.custom-select {
-  position: relative;
-  flex: 1;
-  background: rgba(0,0,0,0.2);
-  border-radius: 5px;
-  cursor: pointer;
-  color: #fff;
-  user-select: none;
-}
-
-.custom-select .selected { padding: 6px; }
-.custom-select .options {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.9);
-  max-height: 150px;
-  overflow-y: auto;
-  border-radius: 0 0 5px 5px;
-  z-index: 5;
-}
-.custom-select .options li {
-  padding: 6px;
-  list-style: none;
-  transition: 0.2s;
-}
-.custom-select .options li:hover {
-  background: rgba(0, 200, 255, 0.2);
-}
-
-@keyframes fadeIn { from { opacity:0; transform:scale(0.9);} to{opacity:1; transform:scale(1);} }
-@keyframes pulseIcon {0%{transform:scale(1);opacity:1;}50%{transform:scale(1.2);opacity:0.8;}100%{transform:scale(1);opacity:1;}}
-@keyframes electricGlow {0%,100%{box-shadow:0 0 25px rgba(0,200,255,0.7);}50%{box-shadow:0 0 45px rgba(0,200,255,1),0 0 70px rgba(0,200,255,0.6);}}
+loadCountriesDiscord();
