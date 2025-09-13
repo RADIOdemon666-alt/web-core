@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const projects = document.querySelectorAll('.project-card');
   let currentIndex = 0;
 
-  // اظهار المشروع الأول
   projects[currentIndex].classList.add('active');
 
   const btnLeft = document.querySelector('.slider-btn-left');
@@ -49,10 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- إرسال البيانات على WhatsApp ---
   const sendBtn = document.getElementById('sendBtn');
-  sendBtn.addEventListener('click', () => {
-    const name = document.getElementById('nameInput').value.trim();
-    const email = document.getElementById('emailInput').value.trim();
-    const request = document.getElementById('requestInput').value.trim();
+  const nameInput = document.getElementById('nameInput');
+  const emailInput = document.getElementById('emailInput');
+  const requestInput = document.getElementById('requestInput');
+
+  sendBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // يمنع أي سلوك افتراضي للزر
+
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const request = requestInput.value.trim();
 
     if (!name || !email || !request) {
       alert('من فضلك املأ جميع الحقول');
@@ -62,6 +67,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const message = `مرحبًا، أنا ${name}\nالبريد الإلكتروني: ${email}\nطلبي: ${request}`;
     const waLink = `https://wa.me/201500564191?text=${encodeURIComponent(message)}`;
     window.open(waLink, '_blank');
+
+    // تفريغ الحقول وإغلاق المودال
+    nameInput.value = '';
+    emailInput.value = '';
+    requestInput.value = '';
     modal.style.display = 'none';
   });
 });
